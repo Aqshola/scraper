@@ -1,0 +1,27 @@
+DOKUMENTASI
+
+Response shopee (item_basic)
+	- Nama Produk (name) 
+	- Foto Individu (image)
+	- Foto Batch (images)
+	- Stock (stock)
+	- Harga (price)
+	- Rating (item_rating.rating_star)
+	- shop location (shop_location)
+	- brand (brand)
+	- discount (discount)
+	- Jumlah terjual (historical_sold)
+	- Url (ganti spasi jadi strip)
+
+	
+Response tokopedia (item_basic)	
+	- Nama Produk
+	- Foto individu (imageURL)
+	- Harga (price)
+	- Rating (ratingAverage)
+	- Shop : (shop.name)
+	- Shop location (shop.city)
+	- Jumlah terjual (labelgroup[2].title)
+	- Url (url)
+	
+	
