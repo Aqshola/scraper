@@ -15,32 +15,19 @@ export const appRouter = router({
       puppeteer.use(stealthPlugin());
       const search_value = opts.input.text;
       const browser = await puppeteer.launch({
-        headless: true,
         defaultViewport: null,
         ignoreHTTPSErrors: true,
         args: ["--no-sandbox", "--window-size=1400,900"],
       });
 
-      const page = await browser.newPage();
-      page.setViewport({
-        width: 1400,
-        height: 900,
-        deviceScaleFactor: 1,
-      });
-
       //TODO TAMBAH REDIS HANDLER
 
-      const shopee_data = await shopee(page, search_value);
-      // const tokopedia_data = await tokopedia(page, search_value);
+      const tokopedia_data = await tokopedia(browser, search_value);
+      const shopee_data = await shopee(browser, search_value);
 
-      console.log("RETURNED DATA", shopee_data);
+      const all_data = shopee_data.concat(tokopedia_data);
 
-      if (browser.pages.length == 0) {
-        await browser.close();
-        console.log("CLOSED BROWSER");
-      }
-
-      return shopee_data;
+      return all_data;
     }),
 });
 // export type definition of API

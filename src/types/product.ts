@@ -6,5 +6,6 @@ export type product = {
   shop_location: string;
   rating: string;
   selled_item: string;
+  platform: "shopee" | "tokopedia";
 };
 export type listOfProduct = Array<product>;
