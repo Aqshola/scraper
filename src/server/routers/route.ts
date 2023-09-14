@@ -5,6 +5,7 @@ import puppeteer from "puppeteer-extra";
 import stealthPlugin from "puppeteer-extra-plugin-stealth";
 import { retryFunction } from "@/helpers/servers/helper";
 import { listOfProduct } from "@/types/product";
+import { initRedis } from "@/helpers/servers/redis";
 
 export const appRouter = router({
   searchProduct: procedure
@@ -23,6 +24,8 @@ export const appRouter = router({
         ignoreHTTPSErrors: true,
         args: ["--no-sandbox", "--window-size=1400,900"],
       });
+
+      const redisClient = await initRedis();
 
       //TODO TAMBAH REDIS HANDLER
 
