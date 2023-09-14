@@ -12,3 +12,16 @@ export const elapsed_time = function (note: string) {
   ); // print message + time
   start = process.hrtime(); // reset the timer
 };
+
+export const retryFunction = async <T>(
+  promiseFunc: (e?: any) => T,
+  counter: number
+): Promise<T | undefined> => {
+  try {
+    return await promiseFunc();
+  } catch (error) {
+    if (counter <= 0) throw error;
+    console.log(error, "error happens");
+    return await retryFunction(promiseFunc, counter - 1);
+  }
+};

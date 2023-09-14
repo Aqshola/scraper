@@ -11,6 +11,7 @@ export async function shopee(
   const page = await browser.newPage();
   await page.goto(shopee_link, {
     waitUntil: "networkidle2",
+    timeout: 10000,
   });
 
   await page.waitForSelector(".shopee-searchbar-input__input");
@@ -63,6 +64,7 @@ export async function tokopedia(
   const page = await browser.newPage();
   await page.goto(tokopedia_link, {
     waitUntil: "networkidle2",
+    timeout: 10000,
   });
 
   await page.waitForSelector('[aria-label="Cari di Tokopedia"]');
