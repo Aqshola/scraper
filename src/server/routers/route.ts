@@ -25,7 +25,13 @@ export const appRouter = router({
         args: ["--no-sandbox", "--window-size=1400,900"],
       });
 
-      const redisClient = await initRedis();
+      const redis_client = await initRedis();
+      const cache_data = await redis_client.get(search_value);
+
+      if (cache_data) {
+        const parse_data_cache = JSON.parse(cache_data);
+        return parse_data_cache;
+      }
 
       //TODO TAMBAH REDIS HANDLER
 
@@ -38,8 +44,6 @@ export const appRouter = router({
         async () => await shopee(browser, search_value),
         3
       );
-
-      console.log(tokopedia_data, shopee_data);
 
       let all_data: listOfProduct = [];
 
@@ -54,6 +58,9 @@ export const appRouter = router({
         browser.close();
       }
 
+      console.log("CACHING");
+      await redis_client.set(search_value, JSON.stringify(all_data));
+      console.log("DONE CACHING");
       return all_data;
     }),
 });
