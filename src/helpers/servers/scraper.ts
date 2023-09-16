@@ -1,6 +1,12 @@
 import { listOfProduct } from "@/types/product";
 import { Browser, HTTPResponse } from "puppeteer";
 import { elapsed_time } from "@/helpers/servers/helper";
+import {
+  convertPriceByDivide,
+  parseStringPriceWithLabelToNumber,
+  shopeeImageConverter,
+  shopeeLinkConverter,
+} from "../common/parsing";
 
 export async function shopee(
   browser: Browser,
@@ -32,13 +38,18 @@ export async function shopee(
           list_item.forEach((el) => {
             const item_info = el.item_basic;
             result.push({
+              id: item_info.itemid,
               name: item_info.name,
-              photo_link: item_info.image,
-              price: item_info.price,
+              photo_link: shopeeImageConverter(item_info.images[0]),
+              price: convertPriceByDivide(item_info.price, 100000),
               rating: item_info.item_rating.rating_star,
               selled_item: item_info.historical_sold,
               shop_location: item_info.shop_location,
-              url: "",
+              url: shopeeLinkConverter(
+                item_info.name,
+                item_info.shopid,
+                item_info.itemid
+              ),
               platform: "shopee",
             });
           });
@@ -88,9 +99,10 @@ export async function tokopedia(
               const data_product: Array<any> = parsing_data[0];
               data_product.forEach((el) => {
                 result.push({
+                  id: el.id,
                   name: el.shop.name + " - " + el.name,
                   photo_link: el.imageUrl,
-                  price: el.price,
+                  price: parseStringPriceWithLabelToNumber(el.price),
                   rating: el.ratingAverage,
                   selled_item: el.labelGroups[el.labelGroups.length - 1].title,
                   shop_location: el.shop.city,

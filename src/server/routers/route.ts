@@ -16,6 +16,8 @@ export const appRouter = router({
     )
     .query(async (opts) => {
       puppeteer.use(stealthPlugin());
+
+      if (!opts.input.text.trim()) throw new Error("Product cannot be empty");
       const search_value = opts.input.text;
       const browser = await puppeteer.launch({
         headless: true,
