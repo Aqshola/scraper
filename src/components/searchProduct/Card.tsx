@@ -1,3 +1,4 @@
+import { amountFormatter } from "@/helpers/common/parsing";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -35,7 +36,7 @@ function Card(props: Props) {
       <h1 style={{ fontSize: "15px", textOverflow: "ellipsis" }}>
         {props.name}
       </h1>
-      <h2 style={{ fontSize: "15px" }}>{props.price}</h2>
+      <h2 style={{ fontSize: "15px" }}>{amountFormatter(props.price)}</h2>
       <h3 style={{ fontSize: "10px" }}>{props.location}</h3>
       <Link target="_blank" href={props.link}>
         Visit

@@ -24,3 +24,14 @@ export const shopeeLinkConverter = (
 export const shopeeImageConverter = (image: string) => {
   return `https://down-id.img.susercontent.com/file/${image}`;
 };
+
+export const amountFormatter = (amount: number) => {
+  const formatted = new Intl.NumberFormat("id-ID", {
+    currency: "IDR",
+    style: "currency",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  }).format(amount);
+
+  return formatted;
+};
