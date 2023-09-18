@@ -1,9 +1,16 @@
 import Head from "next/head";
 import React from "react";
-
+import { Poppins } from "next/font/google";
 type Props = {
   children: React.ReactNode;
 };
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  display: "swap",
+  fallback: ["Segoe UI", "Arial", "sans-serif"],
+});
+
 function Layout({ children }: Props) {
   return (
     <>
@@ -14,11 +21,7 @@ function Layout({ children }: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main
-        style={{
-          boxSizing: "border-box",
-          maxWidth: "1280px",
-          margin: "auto",
-        }}
+        className={`bg-light-pastel min-h-screen max-w-screen-2xl ${poppins.className}`}
       >
         <div>{children}</div>
       </main>

@@ -1,5 +1,8 @@
 import Layout from "@/components/base/Layout";
 import Card from "@/components/searchProduct/Card";
+import CouponDiv from "@/components/base/CouponDiv";
+import { Shop, MessageQuestion } from "iconsax-react";
+
 import { product } from "@/types/product";
 import { trpc } from "@/utils/trpc";
 import Link from "next/link";
@@ -46,7 +49,22 @@ export default function Home() {
 
   return (
     <Layout>
-      <Link href={"/"}>
+      <div className="min-h-screen w-full flex flex-col py-2 px-5">
+        <div className="flex justify-between">
+          <button>
+            <MessageQuestion variant="Bold" />
+          </button>
+          <p className="text-sm font-semibold">Cari dan banding harga barang</p>
+          <button>
+            <Shop variant="Bold" />
+          </button>
+        </div>
+        <CouponDiv
+          text="CABAR"
+          className="justify-center m-auto align-middle"
+        />
+      </div>
+      {/* <Link href={"/"}>
         <h1>Scraper</h1>
       </Link>
       <form onSubmit={searchProduct}>
@@ -97,7 +115,7 @@ export default function Home() {
             ))}
           </div>
         )}
-      </form>
+      </form> */}
     </Layout>
   );
 }
