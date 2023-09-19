@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import Input from "@/components/base/Input";
+import Button from "@/components/base/Button";
 
 export default function Home() {
   const route = useRouter();
@@ -62,9 +63,12 @@ export default function Home() {
         </div>
         <div className="justify-center m-auto align-middle">
           <CouponDiv text="CABAR" />
-          <div className="grid grid-cols-4 mt-3">
+          <div className="grid grid-cols-4 mt-4 gap-3">
             <div className="col-span-3">
               <Input append={<SearchNormal1 />} />
+            </div>
+            <div className="col-span-1">
+              <Button />
             </div>
           </div>
         </div>

@@ -48,7 +48,7 @@ function CouponDiv(props: Props) {
               width="493"
               height="122"
               filterUnits="userSpaceOnUse"
-              color-interpolation-filters="sRGB"
+              colorInterpolationFilters="sRGB"
             >
               <feFlood flood-opacity="0" result="BackgroundImageFix" />
               <feBlend
