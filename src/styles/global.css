@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-#coupondiv {
-  box-shadow: inset 3px 5px 2px rgb(0 0 0 / 0.4);
-  /* filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4)); */
+.input-shadow {
+  box-shadow: inset 0px 4px 4px #bdbcbc;
 }

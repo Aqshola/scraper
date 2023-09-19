@@ -20,10 +20,12 @@ function Layout({ children }: Props) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main
-        className={`bg-light-pastel min-h-screen max-w-screen-2xl ${poppins.className}`}
-      >
-        <div>{children}</div>
+      <main className="bg-light-pastel">
+        <div
+          className={` min-h-screen max-w-screen-2xl mx-auto ${poppins.className}`}
+        >
+          {children}
+        </div>
       </main>
     </>
   );

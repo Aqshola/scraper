@@ -1,13 +1,14 @@
 import Layout from "@/components/base/Layout";
 import Card from "@/components/searchProduct/Card";
 import CouponDiv from "@/components/base/CouponDiv";
-import { Shop, MessageQuestion } from "iconsax-react";
+import { Shop, MessageQuestion, SearchNormal1 } from "iconsax-react";
 
 import { product } from "@/types/product";
 import { trpc } from "@/utils/trpc";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import Input from "@/components/base/Input";
 
 export default function Home() {
   const route = useRouter();
@@ -49,7 +50,7 @@ export default function Home() {
 
   return (
     <Layout>
-      <div className="min-h-screen w-full flex flex-col py-2 px-5">
+      <div className="min-h-screen w-full flex flex-col py-5 px-5">
         <div className="flex justify-between">
           <button>
             <MessageQuestion variant="Bold" />
@@ -59,10 +60,14 @@ export default function Home() {
             <Shop variant="Bold" />
           </button>
         </div>
-        <CouponDiv
-          text="CABAR"
-          className="justify-center m-auto align-middle"
-        />
+        <div className="justify-center m-auto align-middle">
+          <CouponDiv text="CABAR" />
+          <div className="grid grid-cols-4 mt-3">
+            <div className="col-span-3">
+              <Input append={<SearchNormal1 />} />
+            </div>
+          </div>
+        </div>
       </div>
       {/* <Link href={"/"}>
         <h1>Scraper</h1>
