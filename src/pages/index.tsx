@@ -1,5 +1,6 @@
 import Layout from "@/components/base/Layout";
-import Card from "@/components/searchProduct/Card";
+// import Card from "@/components/searchProduct/Card";
+import Card from "@/components/base/Card";
 import CouponDiv from "@/components/base/CouponDiv";
 import { Shop, MessageQuestion, SearchNormal1 } from "iconsax-react";
 
@@ -61,7 +62,7 @@ export default function Home() {
             <Shop variant="Bold" />
           </button>
         </div>
-        <div className="justify-center m-auto align-middle">
+        <div className="justify-center mx-auto mt-64 align-middle">
           <CouponDiv text="CABAR" />
           <div className="grid grid-cols-4 mt-4 gap-3">
             <div className="col-span-3">
@@ -70,6 +71,11 @@ export default function Home() {
             <div className="col-span-1">
               <Button />
             </div>
+          </div>
+        </div>
+        <div className="mt-10 grid grid-cols-12 justify-center gap-4">
+          <div className="col-span-3">
+            <Card />
           </div>
         </div>
       </div>
