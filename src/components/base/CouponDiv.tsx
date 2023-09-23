@@ -7,10 +7,12 @@ type Props = {
 
 function CouponDiv(props: Props) {
   return (
-    <div className={props.className + " " + "w-fit h-fit"}>
+    <div className={props.className + " " + "w-fit h-fit relative"}>
       <div className="relative block w-fit">
-        <div className="absolute z-20 top-1/4 left-1/4">
-          <p className="font-bold text-6xl text-ellipsis pl-5">{props.text}</p>
+        <div className="absolute z-20 top-1/4 left-1/4 w-full">
+          <p className="font-bold text-6xl text-ellipsis pl-5 truncate ">
+            {props.text}
+          </p>
         </div>
         <svg
           className="relative z-0"
@@ -50,7 +52,7 @@ function CouponDiv(props: Props) {
               filterUnits="userSpaceOnUse"
               colorInterpolationFilters="sRGB"
             >
-              <feFlood flood-opacity="0" result="BackgroundImageFix" />
+              <feFlood floodOpacity="0" result="BackgroundImageFix" />
               <feBlend
                 mode="normal"
                 in="SourceGraphic"

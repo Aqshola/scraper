@@ -6,6 +6,7 @@ import {
   parseStringPriceWithLabelToNumber,
   shopeeImageConverter,
   shopeeLinkConverter,
+  tokopediaGetSelledItem,
 } from "../common/parsing";
 
 export async function shopee(
@@ -98,13 +99,14 @@ export async function tokopedia(
             if (parsing_data.length > 0) {
               const data_product: Array<any> = parsing_data[0];
               data_product.forEach((el) => {
+                console.log(el.labelGroups);
                 result.push({
                   id: el.id,
                   name: el.shop.name + " - " + el.name,
                   photo_link: el.imageUrl,
                   price: parseStringPriceWithLabelToNumber(el.price),
                   rating: el.ratingAverage,
-                  selled_item: el.labelGroups[el.labelGroups.length - 1].title,
+                  selled_item: tokopediaGetSelledItem(el.labelGroups),
                   shop_location: el.shop.city,
                   url: el.url,
                   platform: "tokopedia",

@@ -31,8 +31,8 @@ export const appRouter = router({
       const cache_data = await redis_client.get(search_value);
 
       if (cache_data) {
-        const parse_data_cache = JSON.parse(cache_data);
-        return parse_data_cache;
+        const parse_data_cache = JSON.parse(cache_data) as listOfProduct;
+        return parse_data_cache.sort((a, b) => a.price - b.price);
       }
 
       //TODO TAMBAH REDIS HANDLER
@@ -63,7 +63,7 @@ export const appRouter = router({
       console.log("CACHING");
       await redis_client.set(search_value, JSON.stringify(all_data));
       console.log("DONE CACHING");
-      return all_data;
+      return all_data.sort((a, b) => a.price - b.price);
     }),
 });
 // export type definition of API
