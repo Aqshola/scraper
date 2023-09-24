@@ -10,3 +10,12 @@ export const identifyBrowser = () => {
 
   return local_identifier;
 };
+
+export const getBrowserIdentification = () => {
+  if (typeof window != undefined) {
+    const identifier = localStorage.getItem(IDENTIFIER_KEY);
+    if (!identifier) return "";
+    return identifier;
+  }
+  return "";
+};

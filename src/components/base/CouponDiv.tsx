@@ -9,10 +9,12 @@ function CouponDiv(props: Props) {
   return (
     <div className={props.className + " " + "w-fit h-fit relative"}>
       <div className="relative block w-fit">
-        <div className="absolute z-20 top-1/4 left-1/4 w-full">
-          <p className="font-bold text-6xl text-ellipsis pl-5 truncate ">
-            {props.text}
-          </p>
+        <div className=" h-full relative">
+          <div className="w-full  absolute z-10 text-center py-9 px-5">
+            <p className="font-bold text-5xl text-ellipsis pl-5 truncate ">
+              {props.text}
+            </p>
+          </div>
         </div>
         <svg
           className="relative z-0"

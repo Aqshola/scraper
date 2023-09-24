@@ -1,4 +1,4 @@
-import { checkIsDecimal } from "@/helpers/common/validation";
+import { checkIsDecimal } from "@/helpers/validation";
 import React, { useEffect } from "react";
 
 type Props = {
@@ -8,8 +8,8 @@ type Props = {
 function RatingOn() {
   return (
     <svg
-      width="20"
-      height="20"
+      width="14"
+      height="14"
       viewBox="0 0 17 17"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -25,8 +25,8 @@ function RatingOn() {
 function RatingOff() {
   return (
     <svg
-      width="20"
-      height="20"
+      width="14"
+      height="14"
       viewBox="0 0 17 17"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -42,8 +42,8 @@ function RatingOff() {
 function RatingHalf() {
   return (
     <svg
-      width="20"
-      height="20"
+      width="14"
+      height="14"
       viewBox="0 0 17 17"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -91,13 +91,13 @@ export default function Rating(props: Props) {
   }, []);
 
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-1">
       {dummy_array_on.map((el, index) => {
         return <RatingOn key={index + "on"} />;
       })}
       {half_star && <RatingHalf />}
-      {dummy_array_off.map((idx: any) => (
-        <RatingOff key={idx + "off"} />
+      {dummy_array_off.map((el: any, index) => (
+        <RatingOff key={index + "off"} />
       ))}
     </div>
   );

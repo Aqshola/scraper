@@ -1,25 +1,34 @@
 import Layout from "@/components/base/Layout";
-// import Card from "@/components/searchProduct/Card";
-import Card from "@/components/base/Card";
 import CouponDiv from "@/components/base/CouponDiv";
 import { Shop, MessageQuestion, SearchNormal1 } from "iconsax-react";
 
-import { product } from "@/types/product";
 import { trpc } from "@/utils/trpc";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
-import Input from "@/components/base/Input";
-import Button from "@/components/base/Button";
-import { identifyBrowser } from "@/helpers/clients/fingerprint";
+import { useState, useEffect, useRef } from "react";
 
+import { identifyBrowser } from "@/libs/fingerprint";
+import ProgressBar from "@/components/base/ProgressBar";
+import ListProduct from "@/components/searchProduct/ListProduct";
+import FormProduct from "@/components/searchProduct/FormProduct";
+
+{
+  /**
+   * @TODO
+   * - add pagination
+   * - add modal about
+   * - add PWA
+   */
+}
 export default function Home() {
+  /** DECLARE */
   const route = useRouter();
   const paramSearch = route.query.search as string;
-  const [search, setSearch] = useState<string>(paramSearch || "");
-  const [browserId, setBrowserId] = useState("");
+  const [fetchLoading, setfetchLoading] = useState(false);
+  const headerTitleRef = useRef<HTMLDivElement>(null);
 
-  const product = trpc.searchProduct.useQuery(
+  /** INITIATE FETCHER */
+  const getProduct = trpc.product.search.useQuery(
     { text: paramSearch },
     {
       refetchIntervalInBackground: false,
@@ -31,47 +40,69 @@ export default function Home() {
       enabled: false,
     }
   );
+  const getLoading = trpc.loading.get.useQuery(undefined, {
+    enabled: fetchLoading,
+    refetchInterval: 100,
+  });
 
-  const isError = product.isError;
-  const isFetching = product.isFetching;
-  const isDataExist = product.data;
+  /** CONSTANT FROM FETCHER */
+  const isError = getProduct.isError;
+  const isFetching = getProduct.isFetching;
+  const productData = getProduct.data;
 
-  function searchProduct(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    route.push({
-      query: {
-        search,
-      },
-    });
+  const mutateLoading = trpc.loading.set.useMutation();
+  const loadingData = getLoading.data;
 
-    setSearch("");
-  }
-
+  /** USEEFFECT */
   useEffect(() => {
-    const generated_browser_id = identifyBrowser();
-    setBrowserId(generated_browser_id);
+    identifyBrowser();
   }, []);
 
   useEffect(() => {
-    if (paramSearch) {
-      product.refetch();
+    if (paramSearch && !productData) {
+      getProduct.refetch();
     }
   }, [paramSearch]);
 
-  {
-    /**
-     * @TODO
-     * - add pagination
-     * - add handler terjual
-     * - add progress bar (front and back)
-     * - add modal about
-     * - add PWA
-     */
+  useEffect(() => {
+    let timeout: any;
+    if (!isFetching) {
+      timeout = setTimeout(() => {
+        console.log("RESET LOADING");
+        mutateLoading.mutate({ value: 0 });
+        setfetchLoading(false);
+        console.log("RESET LOADING DONE");
+      }, 1000);
+      getLoading.refetch();
+    } else {
+      setfetchLoading(true);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [isFetching]);
+
+  useEffect(() => {
+    if (!fetchLoading) {
+      getLoading.refetch();
+      if (productData && productData?.length > 0) {
+        scrollToHeader();
+      }
+    }
+  }, [fetchLoading]);
+
+  /** METHOD */
+  function scrollToHeader() {
+    const offset_top = headerTitleRef.current?.offsetTop || 0;
+    console.log("SCROLLED");
+    window.scrollTo({
+      top: offset_top - 50,
+      behavior: "smooth",
+    });
   }
 
   return (
     <Layout>
-      <div className="min-h-screen w-full flex flex-col py-5 px-5">
+      <div className="min-h-screen w-full flex flex-col py-5 px-10">
         {/* NAV */}
         <div className="flex justify-between">
           <button>
@@ -84,65 +115,40 @@ export default function Home() {
         </div>
 
         {/* HEADER */}
-        <div className="justify-center mx-auto mt-64 align-middle">
+        <div
+          className="justify-center mx-auto mt-64 align-middle"
+          ref={headerTitleRef}
+        >
           <Link href={"/"}>
             <CouponDiv text={paramSearch ? paramSearch : "CABAR"} />
           </Link>
-          <form
-            className="grid grid-cols-4 mt-4 gap-3"
-            onSubmit={searchProduct}
-          >
-            <div className="col-span-3">
-              <Input
-                append={<SearchNormal1 />}
-                onChange={(e) => setSearch(e.target.value)}
-                required
-                value={search}
-              />
-            </div>
-            <div className="col-span-1">
-              <Button disabled={isFetching}>Cari</Button>
-            </div>
-          </form>
+          <FormProduct initialValue={paramSearch} isLoading={isFetching} />
         </div>
 
         {/* LOADING */}
-        {isFetching && (
-          <div className="text-2xl text-center text-light-blue font-semibold">
-            Loading . . .
+        {fetchLoading && (
+          <div className="w-fit mx-auto mt-10">
+            <div className="w-full animate-width">
+              <ProgressBar value={!fetchLoading ? 0 : loadingData} max={100} />
+            </div>
           </div>
         )}
 
         {/* ERROR */}
         {isError && (
           <div className="text-2xl text-center text-accent-red font-semibold mt-5">
-            {product.error.message}
+            {getProduct.error.message}
           </div>
         )}
 
         {/* CONTENT */}
-        {isDataExist && product.data.length <= 0 && (
+        {!!productData && !fetchLoading && productData.length <= 0 && (
           <div className="text-2xl text-center text-accent-red font-semibold">
             Data tidak ditemukan 😔
           </div>
         )}
-        {isDataExist && product.data.length > 0 && (
-          <div className="mt-10 grid grid-cols-12 justify-center gap-4">
-            {product.data.map((data: product) => (
-              <div className="col-span-3 h-max" key={data.id}>
-                <Card
-                  price={data.price}
-                  img={data.photo_link}
-                  name={data.name}
-                  rating={data.rating}
-                  location={data.shop_location}
-                  platform={data.platform}
-                  selledItem={data.selled_item}
-                  link={data.url}
-                />
-              </div>
-            ))}
-          </div>
+        {!!productData && !fetchLoading && productData.length > 0 && (
+          <ListProduct listData={productData} />
         )}
       </div>
     </Layout>

@@ -3,17 +3,33 @@ import React from "react";
 
 type CustomProps = {
   children: React.ReactNode;
+  size?: "sm" | "md";
 };
 
 type Props = Omit<React.ComponentProps<"button">, keyof CustomProps>;
 
-export default function Button({ children, ...props }: CustomProps & Props) {
-  const DEFAULT_CLASS =
-    "w-full h-full border-4 border-black font-semibold rounded-2xl bg-primary text-center px-3 py-2 button-shadow active:shadow-none active:translate-y-0.5 focus:border-accent-black transition-all  duration-200 disabled:opacity-50 disabled:bg-accent-grey";
+export default function Button({
+  children,
+  size = "md",
+  ...props
+}: CustomProps & Props) {
+  const classObject = {
+    sm: "button-shadow-sm text-sm rounded-xl",
+    md: "px-3 py-2 text-md button-shadow-md rounded-2xl ",
+  };
   return (
     <button
       {...props}
-      className={clsx(DEFAULT_CLASS, props.className, "focus:-translate-y-1")}
+      className={clsx(
+        `w-full h-full border-4 border-black font-semibold 
+        bg-primary text-center 
+         button-shadow active:shadow-none 
+        active:translate-y-0.5 focus:border-accent-black 
+        transition-all duration-200 disabled:opacity-50 
+        disabled:bg-accent-grey focus:-translate-y-1 hover:-translate-y-1`,
+        props.className,
+        classObject[size]
+      )}
     >
       {children}
     </button>

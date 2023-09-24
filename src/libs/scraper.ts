@@ -1,13 +1,14 @@
 import { listOfProduct } from "@/types/product";
 import { Browser, HTTPResponse } from "puppeteer";
-import { elapsed_time } from "@/helpers/servers/helper";
+import { elapsed_time } from "@/helpers/util";
 import {
   convertPriceByDivide,
   parseStringPriceWithLabelToNumber,
   shopeeImageConverter,
   shopeeLinkConverter,
   tokopediaGetSelledItem,
-} from "../common/parsing";
+} from "@/helpers/parsing";
+import { TIMEOUT_DURATION } from "@/constant";
 
 export async function shopee(
   browser: Browser,
@@ -18,7 +19,7 @@ export async function shopee(
   const page = await browser.newPage();
   await page.goto(shopee_link, {
     waitUntil: "networkidle2",
-    timeout: 10000,
+    timeout: TIMEOUT_DURATION,
   });
 
   await page.waitForSelector(".shopee-searchbar-input__input");
@@ -76,7 +77,7 @@ export async function tokopedia(
   const page = await browser.newPage();
   await page.goto(tokopedia_link, {
     waitUntil: "networkidle2",
-    timeout: 10000,
+    timeout: TIMEOUT_DURATION,
   });
 
   await page.waitForSelector('[aria-label="Cari di Tokopedia"]');
@@ -99,7 +100,6 @@ export async function tokopedia(
             if (parsing_data.length > 0) {
               const data_product: Array<any> = parsing_data[0];
               data_product.forEach((el) => {
-                console.log(el.labelGroups);
                 result.push({
                   id: el.id,
                   name: el.shop.name + " - " + el.name,

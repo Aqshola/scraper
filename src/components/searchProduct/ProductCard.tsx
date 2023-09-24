@@ -1,13 +1,9 @@
 import React from "react";
-import Button from "./Button";
-import Rating from "./Rating";
+import Button from "../base/Button";
+import Rating from "../base/Rating";
 import { Location } from "iconsax-react";
 import Image from "next/image";
-import {
-  amountFormatter,
-  shopeeHandleSelledItem,
-} from "@/helpers/common/parsing";
-import { platform } from "os";
+import { amountFormatter, shopeeHandleSelledItem } from "@/helpers/parsing";
 import Link from "next/link";
 
 type Props = {
@@ -22,13 +18,24 @@ type Props = {
 };
 
 export default function Card(props: Props) {
+  let selled_item_label = props.selledItem;
+
+  if (props.platform == "shopee") {
+    if (props.selledItem == "0") {
+      selled_item_label = "Belum terjual";
+    } else {
+      selled_item_label = shopeeHandleSelledItem(
+        Number(props.selledItem)
+      ) as "string";
+    }
+  }
   return (
-    <div className="bg-white border-4 border-black rounded-2xl px-6 pt-24 pb-5 relative overflow-hidden w-full">
+    <div className="bg-white border-4 border-black rounded-2xl px-6 pt-14 pb-5 relative overflow-hidden w-full">
       <div
         id="card-badge"
-        className="absolute top-0 left-0 radius w-24 h-24 border-r-4 border-b-4 rounded-br-[300px]  border-black bg-light-orange"
+        className="absolute top-0 left-0 radius w-14 h-14 border-r-4 border-b-4 rounded-br-[300px]  border-black bg-light-orange"
       >
-        <div className="h-11 w-11 flex  mt-4 ml-4 relative">
+        <div className="h-7 w-7 flex  mt-2 ml-2 relative">
           <Image
             className="object-contain"
             src={`/icon/${props.platform}.png`}
@@ -49,36 +56,30 @@ export default function Card(props: Props) {
             />
           </div>
         </div>
-        <div className="mt-2 w-full text-ellipsis h-40 max-h-40 overflow-hidden text-center font-bold text-2xl">
+        <div className="mt-2 w-full text-ellipsis text-left text-sm line-clamp-2">
           <h2>{props.name}</h2>
         </div>
         <div>
-          <p className="text-xl font-medium text-center text-accent-grey-2 mt-1">
+          <p className="text-md text-left font-bold text-black-2 mt-1">
             {amountFormatter(props.price)}
           </p>
         </div>
-        <div className="flex mt-3 lex justify-center">
+        <div className="mt-2">
           <Rating count={Number(props.rating)} />
         </div>
 
-        {/**
-         * @NOTE handle format terjual
-         *
-         */}
-        <div className="mt-7 text-center font-medium">
-          {props.platform == "shopee" &&
-            shopeeHandleSelledItem(Number(props.selledItem))}
-          {props.platform == "tokopedia" && props.selledItem}
+        <div className="mt-5 text-left text-xs font-medium text-accent-grey">
+          {selled_item_label}
         </div>
-        <div className="mt-1 font-semibold text-center flex justify-center gap-2">
+        <div className="mt-1 text-center flex gap-1 text-xs text-accent-grey">
           <i>
-            <Location variant="Outline" />
+            <Location variant="Outline" size={15} />
           </i>{" "}
           <span>{props.location}</span>
         </div>
         <div className="mt-5">
           <Link href={props.link} target="blank" rel="noopener noreferrer">
-            <Button>Cek Barang</Button>
+            <Button size="sm">Cek Barang</Button>
           </Link>
         </div>
       </div>

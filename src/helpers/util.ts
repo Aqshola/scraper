@@ -1,4 +1,11 @@
-let start = process.hrtime();
+import { PROCESS_STEP } from "@/constant";
+
+let start: [number, number];
+const isServer = typeof window == "undefined";
+
+if (isServer) {
+  start = process.hrtime();
+}
 
 export const elapsed_time = function (note: string) {
   var precision = 3; // 3 decimal places
@@ -24,4 +31,18 @@ export const retryFunction = async <T>(
     console.log(error, "error happens");
     return await retryFunction(promiseFunc, counter - 1);
   }
+};
+
+export const getBaseUrl = () => {
+  if (typeof window !== "undefined")
+    // browser should use relative path
+    return "";
+  if (process.env.VERCEL_URL)
+    // reference for vercel.com
+    return `https://${process.env.VERCEL_URL}`;
+  if (process.env.RENDER_INTERNAL_HOSTNAME)
+    // reference for render.com
+    return `http://${process.env.RENDER_INTERNAL_HOSTNAME}:${process.env.PORT}`;
+  // assume localhost
+  return `http://localhost:${process.env.PORT ?? 3000}`;
 };
