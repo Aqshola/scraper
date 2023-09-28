@@ -5,6 +5,7 @@ import { Location } from "iconsax-react";
 import Image from "next/image";
 import { amountFormatter, shopeeHandleSelledItem } from "@/helpers/parsing";
 import Link from "next/link";
+import clsx from "clsx";
 
 type Props = {
   name: string;
@@ -30,10 +31,14 @@ export default function Card(props: Props) {
     }
   }
   return (
-    <div className="bg-white border-4 border-black rounded-2xl px-6 pt-14 pb-5 relative overflow-hidden w-full h-full">
+    <div className="bg-white border-4 border-black rounded-2xl px-6 pt-14 pb-5 relative overflow-hidden w-full h-full card-shadow">
       <div
         id="card-badge"
-        className="absolute top-0 left-0 radius w-14 h-14 border-r-4 border-b-4 rounded-br-[300px]  border-black bg-light-orange"
+        className={clsx(
+          "absolute top-0 left-0 radius w-14 h-14 border-r-4 border-b-4 rounded-br-[300px]  border-black",
+          props.platform == "shopee" && "bg-light-orange",
+          props.platform == "tokopedia" && "bg-light-green"
+        )}
       >
         <div className="h-7 w-7 flex  mt-2 ml-2 relative">
           <Image

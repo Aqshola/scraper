@@ -21,6 +21,23 @@
   box-shadow: inset 0px 4px 4px #bdbcbc;
 }
 
+.card-shadow {
+  box-shadow: inset 5px 4px 5px #bdbcbc;
+}
+
+/* .dialog-shadow:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 99;
+  box-shadow: inset 4px 4px 5px #818181;
+  @apply border-4 border-black overflow-hidden rounded-xl;
+} */
+
 .button-shadow-sm {
   box-shadow: inset -4px -4px 0px rgb(0, 0, 0, 25%);
 }

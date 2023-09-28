@@ -14,6 +14,7 @@ import FormProduct from "@/components/searchProduct/FormProduct";
 import { usePagination } from "@/hooks/usePaginate";
 import { product } from "@/types/product";
 import Pagination from "@/components/base/Pagination";
+import { useShowDialog } from "@/helpers/ui";
 
 {
   /**
@@ -28,6 +29,7 @@ export default function Home() {
   const route = useRouter();
   const [pagingArr, currPage, manyPages, setInitialPage, changePage] =
     usePagination<product>(12);
+  const { showDialog } = useShowDialog();
   const paramSearch = route.query.search as string;
   const [fetchLoading, setfetchLoading] = useState(false);
   const headerTitleRef = useRef<HTMLDivElement>(null);
@@ -61,6 +63,19 @@ export default function Home() {
   /** CONDITION */
   const isShowListProduct = !!pagingArr && !!productData && !fetchLoading;
   const isListProductEmpty = pagingArr.length == 0;
+
+  /** CONSTANT LOCAL */
+  const ContentAbout = () => (
+    <>
+      <b>Cabar</b> merupakan sebuah platform untuk mencari sebuah barang dari
+      beberapa e-commerce sehingga memudahkan customer dalam mencari dan
+      membandingkan barang yang diinginkan. Data yang digunakan cabar diperoleh
+      melalui hasil scraping dari e-commerce yang dituju. sejauh ini{" "}
+      <b>Cabar</b> dapat memberikan data dari{" "}
+      <span className="font-bold bg-light-orange">Shopee</span> dan{" "}
+      <span className="font-bold bg-light-green">Tokopedia</span>
+    </>
+  );
 
   /** USEEFFECT */
   useEffect(() => {
@@ -118,12 +133,16 @@ export default function Home() {
     scrollToHeader();
   }
 
+  function showAbout() {
+    showDialog("Tentang", <ContentAbout />);
+  }
+
   return (
     <Layout>
       <div className="min-h-screen w-full flex flex-col py-5 px-10">
         {/* NAV */}
         <div className="flex justify-between">
-          <button>
+          <button onClick={showAbout}>
             <MessageQuestion variant="Bold" />
           </button>
           <p className="text-sm font-semibold">Cari dan banding harga barang</p>

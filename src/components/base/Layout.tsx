@@ -1,6 +1,9 @@
 import Head from "next/head";
 import React from "react";
 import { Poppins } from "next/font/google";
+import clsx from "clsx";
+import { useDialogStore } from "@/hooks/useDialog";
+import Dialog from "./Dialog";
 type Props = {
   children: React.ReactNode;
 };
@@ -12,6 +15,9 @@ const poppins = Poppins({
 });
 
 function Layout({ children }: Props) {
+  const { show: dialogShow, component: ComponentDialog } = useDialogStore(
+    (state) => state
+  );
   return (
     <>
       <Head>
@@ -20,10 +26,22 @@ function Layout({ children }: Props) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="bg-light-pastel">
-        <div
-          className={` min-h-screen max-w-screen-2xl mx-auto ${poppins.className}`}
-        >
+      <main
+        className={clsx(
+          "bg-light-pastel relative",
+          poppins.className,
+          dialogShow && "h-screen overflow-hidden"
+        )}
+      >
+        {/* DIALOG */}
+        {dialogShow && (
+          <div className="top-0 bottom-0 z-20 left-0 right-0 absolute h-screen w-full flex justify-center items-center bg-black bg-opacity-50">
+            <div className="max-w-screen-2xl px-10 md:px-24">
+              {ComponentDialog ? ComponentDialog : <span> Ini Dialog</span>}
+            </div>
+          </div>
+        )}
+        <div className="min-h-screen max-w-screen-2xl mx-auto z-10">
           {children}
         </div>
       </main>
