@@ -11,6 +11,9 @@ import { identifyBrowser } from "@/libs/fingerprint";
 import ProgressBar from "@/components/base/ProgressBar";
 import ListProduct from "@/components/searchProduct/ListProduct";
 import FormProduct from "@/components/searchProduct/FormProduct";
+import { usePagination } from "@/hooks/usePaginate";
+import { product } from "@/types/product";
+import Pagination from "@/components/base/Pagination";
 
 {
   /**
@@ -23,6 +26,8 @@ import FormProduct from "@/components/searchProduct/FormProduct";
 export default function Home() {
   /** DECLARE */
   const route = useRouter();
+  const [pagingArr, currPage, manyPages, setInitialPage, changePage] =
+    usePagination<product>(12);
   const paramSearch = route.query.search as string;
   const [fetchLoading, setfetchLoading] = useState(false);
   const headerTitleRef = useRef<HTMLDivElement>(null);
@@ -53,9 +58,16 @@ export default function Home() {
   const mutateLoading = trpc.loading.set.useMutation();
   const loadingData = getLoading.data;
 
+  /** CONDITION */
+  const isShowListProduct = !!pagingArr && !!productData && !fetchLoading;
+  const isListProductEmpty = pagingArr.length == 0;
+
   /** USEEFFECT */
   useEffect(() => {
     identifyBrowser();
+    if (productData) {
+      setInitialPage(productData || []);
+    }
   }, []);
 
   useEffect(() => {
@@ -67,6 +79,7 @@ export default function Home() {
   useEffect(() => {
     let timeout: any;
     if (!isFetching) {
+      setInitialPage(productData || []);
       timeout = setTimeout(() => {
         console.log("RESET LOADING");
         mutateLoading.mutate({ value: 0 });
@@ -98,6 +111,11 @@ export default function Home() {
       top: offset_top - 50,
       behavior: "smooth",
     });
+  }
+
+  function setPage(param: number) {
+    changePage(param);
+    scrollToHeader();
   }
 
   return (
@@ -142,13 +160,23 @@ export default function Home() {
         )}
 
         {/* CONTENT */}
-        {!!productData && !fetchLoading && productData.length <= 0 && (
+        {isShowListProduct && isListProductEmpty && (
           <div className="text-2xl text-center text-accent-red font-semibold">
             Data tidak ditemukan 😔
           </div>
         )}
-        {!!productData && !fetchLoading && productData.length > 0 && (
-          <ListProduct listData={productData} />
+        {isShowListProduct && !isListProductEmpty && (
+          <ListProduct listData={pagingArr} />
+        )}
+
+        {isShowListProduct && !isListProductEmpty && (
+          <div className="mt-5 flex justify-end">
+            <Pagination
+              pages={manyPages}
+              currentPages={currPage}
+              callback={setPage}
+            />
+          </div>
         )}
       </div>
     </Layout>

@@ -8,9 +8,9 @@ type Props = {
 
 export default function ListProduct(props: Props) {
   return (
-    <div className="mt-10 grid grid-cols-12 justify-center gap-4">
+    <div className="mt-10 grid grid-cols-12 justify-center gap-4 h-full">
       {props.listData.map((data: product) => (
-        <div className="col-span-2 h-max" key={data.id}>
+        <div className="col-span-2 h-full" key={data.id}>
           <ProductCard
             price={data.price}
             img={data.photo_link}
