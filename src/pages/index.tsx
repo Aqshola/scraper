@@ -66,15 +66,15 @@ export default function Home() {
 
   /** CONSTANT LOCAL */
   const ContentAbout = () => (
-    <>
+    <p className="text-sm md:text-base te">
       <b>Cabar</b> merupakan sebuah platform untuk mencari sebuah barang dari
       beberapa e-commerce sehingga memudahkan customer dalam mencari dan
-      membandingkan barang yang diinginkan. Data yang digunakan cabar diperoleh
+      membandingkan barang yang diinginkan. Data yang digunakan diperoleh
       melalui hasil scraping dari e-commerce yang dituju. sejauh ini{" "}
       <b>Cabar</b> dapat memberikan data dari{" "}
       <span className="font-bold bg-light-orange">Shopee</span> dan{" "}
       <span className="font-bold bg-light-green">Tokopedia</span>
-    </>
+    </p>
   );
 
   /** USEEFFECT */
@@ -139,7 +139,7 @@ export default function Home() {
 
   return (
     <Layout>
-      <div className="min-h-screen w-full flex flex-col py-5 px-10">
+      <div className="min-h-screen w-full flex flex-col py-5 px-2 md:px-10">
         {/* NAV */}
         <div className="flex justify-between">
           <button onClick={showAbout}>
@@ -153,13 +153,15 @@ export default function Home() {
 
         {/* HEADER */}
         <div
-          className="justify-center mx-auto mt-36 md:mt-64 align-middle"
+          className="justify-center flex flex-col mx-auto mt-1P4 md:mt-64 items-center md:items-stretch"
           ref={headerTitleRef}
         >
           <Link href={"/"}>
             <CouponDiv text={paramSearch ? paramSearch : "CABAR"} />
           </Link>
-          <FormProduct initialValue={paramSearch} isLoading={isFetching} />
+          <div>
+            <FormProduct initialValue={paramSearch} isLoading={isFetching} />
+          </div>
         </div>
 
         {/* LOADING */}

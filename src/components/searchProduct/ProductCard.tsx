@@ -79,7 +79,9 @@ export default function Card(props: Props) {
           <i>
             <Location variant="Outline" size={15} />
           </i>{" "}
-          <span>{props.location}</span>
+          <span className=" line-clamp-1 text-[11px] md:text-xs">
+            {props.location}
+          </span>
         </div>
         <div className="mt-5">
           <Link href={props.link} target="blank" rel="noopener noreferrer">

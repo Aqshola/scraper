@@ -10,7 +10,7 @@ type Props = {
 
 export default function Dialog({ title, content, onClose }: Props) {
   return (
-    <div className="bg-white px-6 pt-5 pb-10 rounded-xl max-w-[700px] relative overflow-hidden dialog-shadow">
+    <div className="bg-white px-3 md:px-6 pt-5 pb-10 rounded-xl max-w-[700px] relative overflow-hidden dialog-shadow">
       <div
         id="card-badge"
         className={clsx(
@@ -25,7 +25,7 @@ export default function Dialog({ title, content, onClose }: Props) {
       </div>
 
       <h1 className="text-center text-4xl font-bold mb-5 mt-10">{title}</h1>
-      <p>{content}</p>
+      <div className="text-sm md:text-base ">{content}</div>
     </div>
   );
 }

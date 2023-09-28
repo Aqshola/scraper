@@ -12,13 +12,13 @@ function CouponDiv(props: Props) {
       <div className="relative block w-fit">
         <div className=" h-full relative">
           <div className="w-full  absolute z-10 text-center py-7 md:py-9 md:px-5">
-            <p className="font-bold text-3xl md:text-5xl text-ellipsis pl-5 truncate ">
+            <p className="font-bold text-3xl md:text-5xl text-ellipsis md:pl-5 truncate ">
               {props.text}
             </p>
           </div>
         </div>
         <svg
-          className="relative z-0 h-[100px] w-[350px]  md:w-[489px] md:h-[118px]"
+          className="relative z-0 h-[100px] w-[300px]  md:w-[489px] md:h-[118px]"
           viewBox="0 0 489 118"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
