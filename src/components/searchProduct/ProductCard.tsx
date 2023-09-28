@@ -67,11 +67,10 @@ export default function Card(props: Props) {
         <div className="mt-2">
           <Rating count={Number(props.rating)} />
         </div>
-
         <div className="mt-5 text-left text-xs font-medium text-accent-grey">
           {selled_item_label}
         </div>
-        <div className="mt-1 text-center flex gap-1 text-xs text-accent-grey">
+        <div className="mt-1 text-left md:text-center flex gap-1 text-xs text-accent-grey">
           <i>
             <Location variant="Outline" size={15} />
           </i>{" "}

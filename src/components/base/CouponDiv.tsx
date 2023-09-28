@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import React from "react";
 
 type Props = {
@@ -7,19 +8,17 @@ type Props = {
 
 function CouponDiv(props: Props) {
   return (
-    <div className={props.className + " " + "w-fit h-fit relative"}>
+    <div className={clsx("w-fit h-fit relative", props.className)}>
       <div className="relative block w-fit">
         <div className=" h-full relative">
-          <div className="w-full  absolute z-10 text-center py-9 px-5">
-            <p className="font-bold text-5xl text-ellipsis pl-5 truncate ">
+          <div className="w-full  absolute z-10 text-center py-7 md:py-9 md:px-5">
+            <p className="font-bold text-3xl md:text-5xl text-ellipsis pl-5 truncate ">
               {props.text}
             </p>
           </div>
         </div>
         <svg
-          className="relative z-0"
-          width="489"
-          height="118"
+          className="relative z-0 h-[100px] w-[350px]  md:w-[489px] md:h-[118px]"
           viewBox="0 0 489 118"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"

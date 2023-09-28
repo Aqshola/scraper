@@ -134,7 +134,7 @@ export default function Home() {
 
         {/* HEADER */}
         <div
-          className="justify-center mx-auto mt-64 align-middle"
+          className="justify-center mx-auto mt-36 md:mt-64 align-middle"
           ref={headerTitleRef}
         >
           <Link href={"/"}>
