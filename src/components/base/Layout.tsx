@@ -35,7 +35,7 @@ function Layout({ children }: Props) {
       >
         {/* DIALOG */}
         {dialogShow && (
-          <div className="top-0 bottom-0 z-20 left-0 right-0 absolute h-screen w-full flex justify-center items-center bg-black bg-opacity-50">
+          <div className="top-0 bottom-0 z-20 left-0 right-0 absolute h-screen w-full flex justify-center items-center bg-black bg-opacity-50 animate-opacity">
             <div className="max-w-screen-2xl px-10 md:px-24">
               {ComponentDialog ? ComponentDialog : <span> Ini Dialog</span>}
             </div>

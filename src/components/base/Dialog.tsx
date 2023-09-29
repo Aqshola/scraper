@@ -1,16 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import { CloseCircle } from "iconsax-react";
 
 type Props = {
   title: String;
   content: React.ReactNode;
-  onClose: (param: any) => any;
+  onClose: (param?: any) => any;
 };
 
 export default function Dialog({ title, content, onClose }: Props) {
+  const [hide, setHide] = useState(false);
+
+  function handleClose() {
+    setHide(true);
+    setTimeout(() => {
+      onClose();
+    }, 200);
+  }
+
   return (
-    <div className="bg-white px-3 md:px-6 pt-5 pb-10 rounded-xl max-w-[700px] relative overflow-hidden dialog-shadow">
+    <div
+      className={clsx(
+        "bg-white px-3 md:px-6 pt-5 pb-10 rounded-xl max-w-[700px] relative overflow-hidden dialog-shadow animate-scale",
+        hide && "animate-scale-hide"
+      )}
+    >
       <div
         id="card-badge"
         className={clsx(
@@ -19,7 +33,7 @@ export default function Dialog({ title, content, onClose }: Props) {
       ></div>
 
       <div className="absolute top-0 right-0 p-4">
-        <button onClick={onClose}>
+        <button onClick={handleClose}>
           <CloseCircle size={"30px"} variant="Linear" />
         </button>
       </div>
