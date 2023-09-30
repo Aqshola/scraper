@@ -17,7 +17,7 @@ export default function Button({
 }: CustomProps & Props) {
   const classObject = {
     sm: "button-shadow-sm text-sm rounded-xl",
-    md: "px-3 py-2 text-md button-shadow-md rounded-2xl ",
+    md: "rounded-xl text-sm px-2  md:px-3 md:py-2 md:text-base button-shadow-sm md:button-shadow-md md:rounded-2xl ",
   };
 
   const variantObject = {

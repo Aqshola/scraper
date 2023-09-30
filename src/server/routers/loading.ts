@@ -1,7 +1,7 @@
 import { handleLoading } from "@/libs/loader";
 import { procedure, router } from "@/server";
 import { redisClient } from "@/libs/redis";
-import { z } from "zod";
+import { loadingInputSchema } from "@/libs/schema";
 
 const loading = router({
   get: procedure.query(async (opts) => {
@@ -15,17 +15,10 @@ const loading = router({
 
     return 0;
   }),
-  set: procedure
-    .input(
-      z.object({
-        value: z.number(),
-      })
-    )
-    .mutation(async (opts) => {
-      console.log("CALLED MUTATE LOADING");
-      const request_browser_id = opts.ctx.browserId as string;
-      handleLoading(request_browser_id, 0);
-    }),
+  set: procedure.input(loadingInputSchema).mutation(async (opts) => {
+    const request_browser_id = opts.ctx.browserId as string;
+    handleLoading(request_browser_id, 0);
+  }),
 });
 
 export default loading;

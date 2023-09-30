@@ -12,7 +12,7 @@ function CouponDiv(props: Props) {
       <div className="relative block w-fit">
         <div className=" h-full relative">
           <div className="w-full  absolute z-10 text-center py-7 md:py-9 md:px-5">
-            <p className="font-bold text-3xl md:text-5xl text-ellipsis md:pl-5 truncate ">
+            <p className="font-bold px-6 text-3xl md:text-5xl text-ellipsis md:px-0 md:pl-5 truncate ">
               {props.text}
             </p>
           </div>

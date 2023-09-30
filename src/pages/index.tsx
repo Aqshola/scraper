@@ -55,13 +55,10 @@ export default function Home() {
   /** CONSTANT FROM FETCHER */
   const isError = getProduct.isError;
   const isFetching = getProduct.isFetching;
-  const errorData = getProduct.error?.data?.zodError;
   const productData = getProduct.data;
 
   const mutateLoading = trpc.loading.set.useMutation();
   const loadingData = getLoading.data;
-  const isLoadingError = getLoading.isError;
-  const loadingErrorData = getLoading.error?.data?.zodError;
 
   /** CONDITION */
   const isShowListProduct = !!pagingArr && !!productData && !fetchLoading;
@@ -102,10 +99,8 @@ export default function Home() {
     if (!isFetching) {
       setInitialPage(productData || []);
       timeout = setTimeout(() => {
-        console.log("RESET LOADING");
         mutateLoading.mutate({ value: 0 });
         setfetchLoading(false);
-        console.log("RESET LOADING DONE");
       }, 1000);
       getLoading.refetch();
     } else {
@@ -127,7 +122,6 @@ export default function Home() {
   /** METHOD */
   function scrollToHeader() {
     const offset_top = headerTitleRef.current?.offsetTop || 0;
-    console.log("SCROLLED");
     window.scrollTo({
       top: offset_top - 50,
       behavior: "smooth",
@@ -148,7 +142,10 @@ export default function Home() {
       <div className="min-h-screen w-full flex flex-col py-5 px-2 md:px-10">
         {/* NAV */}
         <div className="flex justify-between">
-          <button onClick={showAbout}>
+          <button
+            onClick={showAbout}
+            className="hover:bg-primary p-1 transition-all rounded-2xl hover:-translate-y-1"
+          >
             <MessageQuestion variant="Bold" />
           </button>
           <p className="text-sm font-semibold">Cari dan banding harga barang</p>
@@ -188,8 +185,8 @@ export default function Home() {
 
         {/* CONTENT */}
         {isShowListProduct && isListProductEmpty && (
-          <div className="text-2xl text-center text-accent-red font-semibold">
-            Data tidak ditemukan 😔
+          <div className="text-2xl text-center text-accent-red font-semibold mt-10">
+            Yah, barang yang kamu cari gak ketemu 😣
           </div>
         )}
         {isShowListProduct && !isListProductEmpty && (

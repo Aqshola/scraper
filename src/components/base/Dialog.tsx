@@ -21,7 +21,7 @@ export default function Dialog({ title, content, onClose }: Props) {
   return (
     <div
       className={clsx(
-        "bg-white px-3 md:px-6 pt-5 pb-10 rounded-xl max-w-[700px] relative overflow-hidden dialog-shadow animate-scale",
+        "border-4 border-black bg-white px-3 md:px-6 pt-5 pb-10 rounded-xl max-w-[700px] relative overflow-hidden dialog-shadow animate-scale",
         hide && "animate-scale-hide"
       )}
     >

@@ -53,6 +53,8 @@ export default function Card(props: Props) {
         <div className="flex flex-col content-between">
           <div className="block w-full h-44 relative">
             <Image
+              loading="lazy"
+              // placeholder="blur"
               className="object-contain"
               src={props.img}
               fill

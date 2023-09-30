@@ -1,6 +1,6 @@
 import { listOfProduct } from "@/types/product";
 import { Browser, HTTPResponse } from "puppeteer";
-import { elapsed_time } from "@/helpers/util";
+
 import {
   convertPriceByDivide,
   parseStringPriceWithLabelToNumber,
@@ -14,7 +14,6 @@ export async function shopee(
   browser: Browser,
   searchProduct: string
 ): Promise<listOfProduct> {
-  elapsed_time("START SHOPEE");
   const shopee_link = "https://shopee.co.id";
   const page = await browser.newPage();
   await page.goto(shopee_link, {
@@ -64,7 +63,6 @@ export async function shopee(
   };
 
   const result_scrap = await responseData();
-  elapsed_time("END SHOPEE");
   return result_scrap;
 }
 
@@ -72,7 +70,6 @@ export async function tokopedia(
   browser: Browser,
   searchProduct: string
 ): Promise<listOfProduct> {
-  elapsed_time("START TOKOPEDIA");
   const tokopedia_link = "https://www.tokopedia.com";
   const page = await browser.newPage();
   await page.goto(tokopedia_link, {
@@ -121,6 +118,5 @@ export async function tokopedia(
     });
 
   const result_scrap = await response_data();
-  elapsed_time("END TOKOPEDIA");
   return result_scrap;
 }

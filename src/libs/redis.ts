@@ -1,12 +1,13 @@
 import { TRPCError } from "@trpc/server";
 import { createClient } from "redis";
+import { logger } from "./logger";
 
 export const redisClient = createClient();
 const connectRedis = async () => {
   try {
     await redisClient.connect();
     redisClient.on("connect", () => {
-      console.log("REDIS CONNECTED");
+      logger.info("REDIS CONNECTED");
     });
   } catch (error) {
     process.exit();
