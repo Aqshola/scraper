@@ -11,17 +11,9 @@ export default function Custom404({}: Props) {
         <div className="mx-auto flex justify-center items-center h-screen flex-col">
           <div className="text-5xl mb-1">🤨</div>
           <h1 className="text-4xl font-bold text-accent-red">
-            Hayooo mau kemana
+            Yah, kamu lagi offline nih
           </h1>
-          <p className="mt-2 text-lg ">
-            Gaada apa-apa disini,{" "}
-            <Link
-              className="bg-primary font-bold p-1 rounded-lg text-base border-2 border-black"
-              href={"/"}
-            >
-              yuk balik aja
-            </Link>{" "}
-          </p>
+          <p className="mt-2 text-lg ">Yuk online biar bisa cari barang lagi</p>
         </div>
       </div>
     </Layout>

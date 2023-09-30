@@ -33,6 +33,7 @@ export default function Home() {
   const paramSearch = route.query.search as string;
   const [fetchLoading, setfetchLoading] = useState(false);
   const headerTitleRef = useRef<HTMLDivElement>(null);
+  const installPromp = useRef<any>(null);
 
   /** INITIATE FETCHER */
   const getProduct = trpc.product.search.useQuery(
@@ -77,12 +78,24 @@ export default function Home() {
     </p>
   );
 
+  const ContentPWA = () => (
+    <p className="text-sm md:text-base">
+      <b>Cabar</b> sudah mendukung PWA, untuk melakukan instalasi PWA cukup
+      tekan tombol instalasi di address bar dan lakukan konfirmasi instalasi
+    </p>
+  );
+
   /** USEEFFECT */
   useEffect(() => {
     identifyBrowser();
     if (productData) {
       setInitialPage(productData || []);
     }
+
+    window.addEventListener("beforeinstallprompt", (evt) => {
+      evt.preventDefault();
+      installPromp.current = evt;
+    });
   }, []);
 
   useEffect(() => {
@@ -137,6 +150,13 @@ export default function Home() {
     showDialog("Tentang", <ContentAbout />);
   }
 
+  async function showConfirmPWA() {
+    showDialog("PWA", <ContentPWA />);
+    if (installPromp.current) {
+      await installPromp.current.prompt();
+    }
+  }
+
   return (
     <Layout>
       <div className="min-h-screen w-full flex flex-col py-5 px-2 md:px-10">
@@ -149,7 +169,10 @@ export default function Home() {
             <MessageQuestion variant="Bold" />
           </button>
           <p className="text-sm font-semibold">Cari dan banding harga barang</p>
-          <button>
+          <button
+            onClick={showConfirmPWA}
+            className="hover:bg-primary p-1 transition-all rounded-2xl hover:-translate-y-1"
+          >
             <Shop variant="Bold" />
           </button>
         </div>
