@@ -1,4 +1,3 @@
-import * as trpc from "@trpc/server";
 import { inferAsyncReturnType } from "@trpc/server";
 import * as trpcNext from "@trpc/server/adapters/next";
 import { BROWSER_ID_CUSTOM_HEADER } from "@/constant";

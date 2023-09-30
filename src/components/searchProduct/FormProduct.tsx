@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Input from "@/components/base/Input";
 import Button from "@/components/base/Button";
 import { SearchNormal1 } from "iconsax-react";
@@ -24,6 +24,15 @@ export default function FormProduct(props: Props) {
 
     setSearch("");
   }
+
+  useEffect(() => {
+    if (!props.initialValue) {
+      setSearch("");
+    }
+
+    return () => setSearch("");
+  }, [props.initialValue]);
+
   return (
     <form className="grid grid-cols-4 mt-4 gap-3" onSubmit={searchProduct}>
       <div className="col-span-3">
