@@ -5,10 +5,10 @@ import stealthPlugin from "puppeteer-extra-plugin-stealth";
 import { retryFunction } from "@/helpers/util";
 import { listOfProduct } from "@/types/product";
 import { shopee, tokopedia } from "@/libs/scraper";
-import { getRedisClient } from "@/libs/redis";
+import { redisClient } from "@/libs/redis";
 import { handleLoading } from "@/libs/loader";
+import { TRPCError } from "@trpc/server";
 
-const redis = getRedisClient();
 const product = router({
   search: procedure
     .input(
@@ -21,7 +21,11 @@ const product = router({
       handleLoading(request_browser_id, 0); // START LOADING
       puppeteer.use(stealthPlugin());
 
-      if (!opts.input.text.trim()) throw new Error("Product cannot be empty");
+      if (!opts.input.text.trim())
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Product cannot be empty",
+        });
       const search_value = opts.input.text;
 
       const browser = await puppeteer.launch({
@@ -31,7 +35,7 @@ const product = router({
         args: ["--no-sandbox", "--window-size=1400,900"],
       });
 
-      const cache_data = await redis.get(search_value);
+      const cache_data = await redisClient.get(search_value);
 
       if (cache_data) {
         const parse_data_cache = JSON.parse(cache_data) as listOfProduct;
@@ -66,7 +70,7 @@ const product = router({
       handleLoading(request_browser_id, 3);
 
       console.log("CACHING");
-      await redis.set(search_value, JSON.stringify(all_data));
+      await redisClient.set(search_value, JSON.stringify(all_data));
       console.log("DONE CACHING");
       handleLoading(request_browser_id, 4); // FINISH
       return all_data.sort((a, b) => a.price - b.price);

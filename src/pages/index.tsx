@@ -55,10 +55,13 @@ export default function Home() {
   /** CONSTANT FROM FETCHER */
   const isError = getProduct.isError;
   const isFetching = getProduct.isFetching;
+  const errorData = getProduct.error?.data?.zodError;
   const productData = getProduct.data;
 
   const mutateLoading = trpc.loading.set.useMutation();
   const loadingData = getLoading.data;
+  const isLoadingError = getLoading.isError;
+  const loadingErrorData = getLoading.error?.data?.zodError;
 
   /** CONDITION */
   const isShowListProduct = !!pagingArr && !!productData && !fetchLoading;
@@ -88,6 +91,9 @@ export default function Home() {
   useEffect(() => {
     if (paramSearch && !productData) {
       getProduct.refetch();
+    }
+    if (!paramSearch) {
+      mutateLoading.mutate({ value: 0 });
     }
   }, [paramSearch]);
 
@@ -153,7 +159,7 @@ export default function Home() {
 
         {/* HEADER */}
         <div
-          className="justify-center flex flex-col mx-auto mt-1P4 md:mt-64 items-center md:items-stretch"
+          className="justify-center flex flex-col mx-auto mt-14 md:mt-64 items-center md:items-stretch"
           ref={headerTitleRef}
         >
           <Link href={"/"}>
@@ -176,7 +182,7 @@ export default function Home() {
         {/* ERROR */}
         {isError && (
           <div className="text-2xl text-center text-accent-red font-semibold mt-5">
-            {getProduct.error.message}
+            {isError && <span>Yah, lagi ada error nih maaf ya 😣</span>}
           </div>
         )}
 

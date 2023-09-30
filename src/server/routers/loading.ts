@@ -1,14 +1,12 @@
 import { handleLoading } from "@/libs/loader";
 import { procedure, router } from "@/server";
-import { getRedisClient } from "@/libs/redis";
+import { redisClient } from "@/libs/redis";
 import { z } from "zod";
-
-const redis = getRedisClient();
 
 const loading = router({
   get: procedure.query(async (opts) => {
     const request_browser_id = opts.ctx.browserId as string;
-    const cache_data = await redis.get(request_browser_id);
+    const cache_data = await redisClient.get(request_browser_id);
 
     if (cache_data) {
       const parse_data_cache = JSON.parse(cache_data) as number;

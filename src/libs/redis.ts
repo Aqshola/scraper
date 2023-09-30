@@ -1,14 +1,22 @@
+import { TRPCError } from "@trpc/server";
 import { createClient } from "redis";
 
-let redisClient: ReturnType<typeof createClient>;
-export const initRedis = () => {
-  redisClient = createClient();
-  redisClient.on("error", (err) => {
-    console.error("Error Redis :" + err);
-    throw new Error("REDIS ERROR");
-  });
-  redisClient.connect();
-  console.log("REDIS START");
+export const redisClient = createClient();
+const connectRedis = async () => {
+  try {
+    await redisClient.connect();
+    redisClient.on("connect", () => {
+      console.log("REDIS CONNECTED");
+    });
+  } catch (error) {
+    process.exit();
+  }
 };
 
-export const getRedisClient = () => redisClient;
+connectRedis();
+redisClient.on("error", (err) => {
+  throw new TRPCError({
+    code: "INTERNAL_SERVER_ERROR",
+    message: "Something wrong",
+  });
+});

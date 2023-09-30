@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 type Props = {
   initialValue?: string;
   isLoading?: boolean;
+  disabled?: boolean;
 };
 
 export default function FormProduct(props: Props) {
@@ -27,6 +28,7 @@ export default function FormProduct(props: Props) {
     <form className="grid grid-cols-4 mt-4 gap-3" onSubmit={searchProduct}>
       <div className="col-span-3">
         <Input
+          disabled={props.disabled}
           append={<SearchNormal1 />}
           onChange={(e) => setSearch(e.target.value)}
           required
@@ -34,7 +36,7 @@ export default function FormProduct(props: Props) {
         />
       </div>
       <div className="col-span-1">
-        <Button disabled={props.isLoading}>Cari</Button>
+        <Button disabled={props.isLoading || props.disabled}>Cari</Button>
       </div>
     </form>
   );
