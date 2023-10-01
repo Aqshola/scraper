@@ -1,12 +1,14 @@
+import { Image } from "@/types/image";
+
 export type product = {
   id: string;
   name: string;
   price: number;
-  photo_link: string;
   url: string;
   shop_location: string;
   rating: string;
   selled_item: string;
   platform: "shopee" | "tokopedia";
+  image: Image;
 };
 export type listOfProduct = Array<product>;

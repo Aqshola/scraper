@@ -6,6 +6,7 @@ import Image from "next/image";
 import { amountFormatter, shopeeHandleSelledItem } from "@/helpers/parsing";
 import Link from "next/link";
 import clsx from "clsx";
+import { Image as ImageType } from "@/types/image";
 
 type Props = {
   name: string;
@@ -13,7 +14,7 @@ type Props = {
   rating: string;
   selledItem: string;
   location: string;
-  img: string;
+  image: ImageType;
   platform: "shopee" | "tokopedia";
   link: string;
 };
@@ -54,9 +55,10 @@ export default function Card(props: Props) {
           <div className="block w-full h-44 relative">
             <Image
               loading="lazy"
-              // placeholder="blur"
+              placeholder="blur"
               className="object-contain"
-              src={props.img}
+              src={props.image.src}
+              blurDataURL={props.image.blurHash}
               fill
               alt="baju"
               sizes="176px"

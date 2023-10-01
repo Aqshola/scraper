@@ -1,12 +1,16 @@
 /** @type {import('next').NextConfig} */
-const withPWA = require("next-pwa")({
+import PWA from "next-pwa";
+import withPlugins from "next-compose-plugins";
+
+const withPWA = PWA({
   dest: "public",
 });
-const nextConfig = withPWA({
+
+const nextConfig = {
   reactStrictMode: true,
   images: {
     domains: ["images.tokopedia.net", "down-id.img.susercontent.com"],
   },
-});
+};
 
-module.exports = nextConfig;
+export default withPlugins([withPWA], nextConfig);

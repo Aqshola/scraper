@@ -38,10 +38,10 @@ export async function shopee(
 
           list_item.forEach((el) => {
             const item_info = el.item_basic;
+            const imageSrc = shopeeImageConverter(item_info.images[0]);
             result.push({
               id: item_info.itemid,
               name: item_info.name,
-              photo_link: shopeeImageConverter(item_info.images[0]),
               price: convertPriceByDivide(item_info.price, 100000),
               rating: item_info.item_rating.rating_star,
               selled_item: item_info.historical_sold,
@@ -51,6 +51,12 @@ export async function shopee(
                 item_info.shopid,
                 item_info.itemid
               ),
+              image: {
+                src: imageSrc,
+                height: "",
+                blurHash: "",
+                width: "",
+              },
               platform: "shopee",
             });
           });
@@ -100,13 +106,18 @@ export async function tokopedia(
                 result.push({
                   id: el.id,
                   name: el.shop.name + " - " + el.name,
-                  photo_link: el.imageUrl,
                   price: parseStringPriceWithLabelToNumber(el.price),
                   rating: el.ratingAverage,
                   selled_item: tokopediaGetSelledItem(el.labelGroups),
                   shop_location: el.shop.city,
                   url: el.url,
                   platform: "tokopedia",
+                  image: {
+                    src: el.imageUrl,
+                    height: "",
+                    blurHash: "",
+                    width: "",
+                  },
                 });
               });
               resolve(result);

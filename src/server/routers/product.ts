@@ -1,7 +1,7 @@
 import { procedure, router } from "@/server";
 import puppeteer from "puppeteer-extra";
 import stealthPlugin from "puppeteer-extra-plugin-stealth";
-import { measureAndRetry, retryFunction } from "@/helpers/util";
+import { measureAndRetry, measureTime, retryFunction } from "@/helpers/util";
 import { listOfProduct } from "@/types/product";
 import { shopee, tokopedia } from "@/libs/scraper";
 import { redisClient } from "@/libs/redis";
@@ -9,12 +9,13 @@ import { handleLoading } from "@/libs/loader";
 import { TRPCError } from "@trpc/server";
 import { productInputSchema } from "@/libs/schema";
 import { logger } from "@/libs/logger";
-import shell from "shelljs";
+import { generateProductBlurData } from "@/helpers/imageBlur";
 
 const product = router({
   search: procedure.input(productInputSchema).query(async (opts) => {
     const request_browser_id = opts.ctx.browserId as string;
     let all_data: listOfProduct = [];
+    let generated_data: listOfProduct = [];
     let tokopedia_data: listOfProduct = [];
     let shopee_data: listOfProduct = [];
     handleLoading(request_browser_id, 0); // START LOADING
@@ -73,8 +74,22 @@ const product = router({
     if (browser.pages.length == 0) {
       browser.close();
     }
+    try {
+      generated_data = await measureTime(
+        async () => await generateProductBlurData(all_data),
+        "GENERATE BLUR"
+      );
+    } catch (error) {
+      logger.error(error, "Error Blur");
+    }
+
     handleLoading(request_browser_id, 3);
-    await redisClient.set(search_value, JSON.stringify(all_data));
+
+    if (generated_data.length == 0) {
+      await redisClient.set(search_value, JSON.stringify(all_data));
+    } else {
+      await redisClient.set(search_value, JSON.stringify(generated_data));
+    }
     handleLoading(request_browser_id, 4); // FINISH
     return all_data.sort((a, b) => a.price - b.price);
   }),

@@ -13,7 +13,7 @@ export default function ListProduct(props: Props) {
         <div className="col-span-1 md:col-span-2 h-full" key={data.id}>
           <ProductCard
             price={data.price}
-            img={data.photo_link}
+            image={data.image}
             name={data.name}
             rating={data.rating}
             location={data.shop_location}
