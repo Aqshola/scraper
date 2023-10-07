@@ -903,5 +903,9 @@
     "background_color": "#FFFCDF",
     "start_url": "/",
     "display": "standalone",
-    "orientation": "portrait"
+    "orientation": "portrait",
+    "related_applications": [{
+      "platform": "webapp",
+      "url": "http://localhost:3000/manifest.json"
+    }]
 }

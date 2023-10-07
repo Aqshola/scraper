@@ -1,6 +1,5 @@
 import Layout from "@/components/base/Layout";
 import CouponDiv from "@/components/base/CouponDiv";
-import { Shop, MessageQuestion, SearchNormal1 } from "iconsax-react";
 
 import { trpc } from "@/utils/trpc";
 import Link from "next/link";
@@ -14,22 +13,14 @@ import FormProduct from "@/components/searchProduct/FormProduct";
 import { usePagination } from "@/hooks/usePaginate";
 import { product } from "@/types/product";
 import Pagination from "@/components/base/Pagination";
-import { useShowDialog } from "@/helpers/ui";
+import NavProduct from "@/components/searchProduct/NavProduct";
 
-{
-  /**
-   * @TODO
-   * - add pagination
-   * - add modal about
-   * - add PWA
-   */
-}
 export default function Home() {
   /** DECLARE */
   const route = useRouter();
   const [pagingArr, currPage, manyPages, setInitialPage, changePage] =
     usePagination<product>(12);
-  const { showDialog } = useShowDialog();
+
   const paramSearch = route.query.search as string;
   const [fetchLoading, setfetchLoading] = useState(false);
   const headerTitleRef = useRef<HTMLDivElement>(null);
@@ -65,26 +56,6 @@ export default function Home() {
   const isShowListProduct = !!pagingArr && !!productData && !fetchLoading;
   const isListProductEmpty = pagingArr.length == 0;
 
-  /** CONSTANT LOCAL */
-  const ContentAbout = () => (
-    <p className="text-sm md:text-base te">
-      <b>Cabar</b> merupakan sebuah platform untuk mencari sebuah barang dari
-      beberapa e-commerce sehingga memudahkan customer dalam mencari dan
-      membandingkan barang yang diinginkan. Data yang digunakan diperoleh
-      melalui hasil scraping dari e-commerce yang dituju. sejauh ini{" "}
-      <b>Cabar</b> dapat memberikan data dari{" "}
-      <span className="font-bold bg-light-orange">Shopee</span> dan{" "}
-      <span className="font-bold bg-light-green">Tokopedia</span>
-    </p>
-  );
-
-  const ContentPWA = () => (
-    <p className="text-sm md:text-base">
-      <b>Cabar</b> sudah mendukung PWA, untuk melakukan instalasi PWA cukup
-      tekan tombol instalasi di address bar dan lakukan konfirmasi instalasi
-    </p>
-  );
-
   /** USEEFFECT */
   useEffect(() => {
     identifyBrowser();
@@ -92,10 +63,7 @@ export default function Home() {
       setInitialPage(productData || []);
     }
 
-    window.addEventListener("beforeinstallprompt", (evt) => {
-      evt.preventDefault();
-      installPromp.current = evt;
-    });
+    generateInstallPrompt();
   }, []);
 
   useEffect(() => {
@@ -146,36 +114,18 @@ export default function Home() {
     scrollToHeader();
   }
 
-  function showAbout() {
-    showDialog("Tentang", <ContentAbout />);
-  }
-
-  async function showConfirmPWA() {
-    showDialog("PWA", <ContentPWA />);
-    if (installPromp.current) {
-      await installPromp.current.prompt();
-    }
+  function generateInstallPrompt() {
+    window.addEventListener("beforeinstallprompt", (evt) => {
+      evt.preventDefault();
+      installPromp.current = evt;
+    });
   }
 
   return (
     <Layout>
       <div className="min-h-screen w-full flex flex-col py-5 px-2 md:px-10">
         {/* NAV */}
-        <div className="flex justify-between">
-          <button
-            onClick={showAbout}
-            className="hover:bg-primary p-1 transition-all rounded-2xl hover:-translate-y-1"
-          >
-            <MessageQuestion variant="Bold" />
-          </button>
-          <p className="text-sm font-semibold">Cari dan banding harga barang</p>
-          <button
-            onClick={showConfirmPWA}
-            className="hover:bg-primary p-1 transition-all rounded-2xl hover:-translate-y-1"
-          >
-            <Shop variant="Bold" />
-          </button>
-        </div>
+        <NavProduct installPrompt={installPromp.current} />
 
         {/* HEADER */}
         <div
