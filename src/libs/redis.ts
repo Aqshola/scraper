@@ -2,7 +2,12 @@ import { TRPCError } from "@trpc/server";
 import { createClient } from "redis";
 import { logger } from "./logger";
 
-export const redisClient = createClient();
+export const redisClient = createClient({
+  url: process.env.REDIS_URL,
+  username: process.env.REDIS_USERNAME,
+  password: process.env.REDIS_PASSOWRD,
+  database: process.env.REDIS_DATABASE as unknown as number,
+});
 const connectRedis = async () => {
   try {
     await redisClient.connect();
