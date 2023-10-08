@@ -50,5 +50,12 @@
     "jest-environment-jsdom": "^29.7.0",
     "postcss": "^8.4.29",
     "tailwindcss": "^3.3.3"
-  }
+  },
+  "majestic": {
+    "jestScriptPath": "../node_modules/jest/bin/jest.js",
+    "args": ["--config=./jest-config.js"],
+    "env": {
+      "CI": "true"
+    }
+}
 }
