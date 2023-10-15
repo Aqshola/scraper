@@ -63,7 +63,7 @@ const product = router({
         timeout: 15000,
         defaultViewport: null,
         ignoreHTTPSErrors: true,
-        args: ["--no-sandbox", "--window-size=1400,900"],
+        args: ["--no-sandbox", "--window-size=1400,900", "--disable-gpu"],
       });
 
       try {
