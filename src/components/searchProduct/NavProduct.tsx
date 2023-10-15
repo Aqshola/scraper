@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Shop, MessageQuestion, SearchNormal1 } from "iconsax-react";
 import { isClient, useShowDialog } from "@/helpers/ui";
-import { logger } from "@/libs/logger";
 type Props = {
   installPrompt: any;
 };
