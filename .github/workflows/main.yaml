@@ -13,4 +13,8 @@ jobs:
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
           command_timeout: 30m
-          script: whoami
+          script: |
+            mkdir scraper
+            git pull origin master
+            docker build -t scraper .
+            docker run -rm -d -p 9000:3000 scraper
