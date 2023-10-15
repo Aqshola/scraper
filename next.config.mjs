@@ -11,7 +11,6 @@ const nextConfig = {
   images: {
     domains: ["images.tokopedia.net", "down-id.img.susercontent.com"],
   },
-  output: "standalone",
 };
 
 export default withPlugins([withPWA], nextConfig);

@@ -21,7 +21,7 @@ import "puppeteer-extra-plugin-stealth/evasions/defaultArgs";
 import "puppeteer-extra-plugin-user-preferences";
 import "puppeteer-extra-plugin-user-data-dir";
 
-import { measureAndRetry, measureTime, retryFunction } from "@/helpers/util";
+import { measureAndRetry, measureTime } from "@/helpers/util";
 import { listOfProduct } from "@/types/product";
 import { shopee, tokopedia } from "@/libs/scraper";
 import { redisClient } from "@/libs/redis";
@@ -33,85 +33,90 @@ import { generateProductBlurData } from "@/helpers/imageBlur";
 
 const product = router({
   search: procedure.input(productInputSchema).query(async (opts) => {
-    const request_browser_id = opts.ctx.browserId as string;
-    let all_data: listOfProduct = [];
-    let generated_data: listOfProduct = [];
-    let tokopedia_data: listOfProduct = [];
-    let shopee_data: listOfProduct = [];
-    handleLoading(request_browser_id, 0); // START LOADING
-    puppeteer.use(stealthPlugin());
+    try {
+      const request_browser_id = opts.ctx.browserId as string;
+      let all_data: listOfProduct = [];
+      let generated_data: listOfProduct = [];
+      let tokopedia_data: listOfProduct = [];
+      let shopee_data: listOfProduct = [];
+      handleLoading(request_browser_id, 0); // START LOADING
+      puppeteer.use(stealthPlugin());
 
-    if (!opts.input.text.trim())
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "Product cannot be empty",
+      if (!opts.input.text.trim())
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Product cannot be empty",
+        });
+      const search_value = opts.input.text;
+
+      const cache_data = await redisClient.get(search_value);
+
+      if (cache_data) {
+        const parse_data_cache = JSON.parse(cache_data) as listOfProduct;
+        handleLoading(request_browser_id, 4); // FINISH
+        return parse_data_cache.sort((a, b) => a.price - b.price);
+      }
+
+      logger.info("BROWSER OPEN");
+      const browser = await puppeteer.launch({
+        headless: "new",
+        timeout: 15000,
+        defaultViewport: null,
+        ignoreHTTPSErrors: true,
+        args: ["--no-sandbox", "--window-size=1400,900"],
       });
-    const search_value = opts.input.text;
 
-    const cache_data = await redisClient.get(search_value);
+      try {
+        tokopedia_data = await measureAndRetry(
+          async () => await tokopedia(browser, search_value),
+          "TOKOPEDIA"
+        );
+        handleLoading(request_browser_id, 1); // START TOKOPEDIA
 
-    if (cache_data) {
-      const parse_data_cache = JSON.parse(cache_data) as listOfProduct;
+        shopee_data = await measureAndRetry(
+          async () => await shopee(browser, search_value),
+          "SHOPEE"
+        );
+        handleLoading(request_browser_id, 2); // START SHOPEE
+      } catch (error) {
+        logger.error("Error happens", error);
+      } finally {
+        logger.info("BROWSER CLOSED");
+        await browser.close();
+      }
+
+      if (tokopedia_data && tokopedia_data.length > 0) {
+        all_data = all_data.concat(tokopedia_data);
+      }
+      if (shopee_data && shopee_data.length > 0) {
+        all_data = all_data.concat(shopee_data);
+      }
+
+      if (browser.pages.length == 0) {
+        browser.close();
+      }
+      try {
+        generated_data = await measureTime(
+          async () => await generateProductBlurData(all_data),
+          "GENERATE BLUR"
+        );
+      } catch (error) {
+        logger.error(error, "Error Blur");
+      }
+
+      handleLoading(request_browser_id, 3);
+
+      if (generated_data.length == 0) {
+        await redisClient.set(search_value, JSON.stringify(all_data));
+      } else {
+        await redisClient.set(search_value, JSON.stringify(generated_data));
+      }
       handleLoading(request_browser_id, 4); // FINISH
-      return parse_data_cache.sort((a, b) => a.price - b.price);
-    }
-
-    logger.info("BROWSER OPEN");
-    const browser = await puppeteer.launch({
-      headless: "new",
-      timeout: 15000,
-      defaultViewport: null,
-      ignoreHTTPSErrors: true,
-      args: ["--no-sandbox", "--window-size=1400,900"],
-    });
-
-    try {
-      tokopedia_data = await measureAndRetry(
-        async () => await tokopedia(browser, search_value),
-        "TOKOPEDIA"
-      );
-      handleLoading(request_browser_id, 1); // START TOKOPEDIA
-
-      shopee_data = await measureAndRetry(
-        async () => await shopee(browser, search_value),
-        "SHOPEE"
-      );
-      handleLoading(request_browser_id, 2); // START SHOPEE
+      return all_data.sort((a, b) => a.price - b.price);
     } catch (error) {
-      logger.error("Error happens", error);
-    } finally {
-      logger.info("BROWSER CLOSED");
-      await browser.close();
+      logger.debug(error);
+      return [];
     }
-
-    if (tokopedia_data && tokopedia_data.length > 0) {
-      all_data = all_data.concat(tokopedia_data);
-    }
-    if (shopee_data && shopee_data.length > 0) {
-      all_data = all_data.concat(shopee_data);
-    }
-
-    if (browser.pages.length == 0) {
-      browser.close();
-    }
-    try {
-      generated_data = await measureTime(
-        async () => await generateProductBlurData(all_data),
-        "GENERATE BLUR"
-      );
-    } catch (error) {
-      logger.error(error, "Error Blur");
-    }
-
-    handleLoading(request_browser_id, 3);
-
-    if (generated_data.length == 0) {
-      await redisClient.set(search_value, JSON.stringify(all_data));
-    } else {
-      await redisClient.set(search_value, JSON.stringify(generated_data));
-    }
-    handleLoading(request_browser_id, 4); // FINISH
-    return all_data.sort((a, b) => a.price - b.price);
   }),
 });
 
