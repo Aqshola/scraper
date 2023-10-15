@@ -59,11 +59,18 @@ const product = router({
 
       logger.info("BROWSER OPEN");
       const browser = await puppeteer.launch({
+        executablePath: `/usr/bin/google-chrome`,
         headless: "new",
         timeout: 15000,
         defaultViewport: null,
         ignoreHTTPSErrors: true,
-        args: ["--no-sandbox", "--window-size=1400,900", "--disable-gpu"],
+        args: [
+          "--no-sandbox",
+          "--window-size=1400,900",
+          "--disable-gpu",
+          "--headless",
+          "--disable-dev-shm-usage",
+        ],
       });
 
       try {
