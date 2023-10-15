@@ -1,10 +1,14 @@
 import pino from "pino";
+import pretty from "pino-pretty";
 
-export const logger = pino({
-  transport: {
-    target: "pino-pretty",
-    options: {
-      colorize: true,
-    },
-  },
+const stream = pretty({
+  levelFirst: true,
+  colorize: true,
 });
+export const logger = pino(
+  {
+    name: "Logger",
+    level: process.env.NODE_ENV === "development" ? "debug" : "info",
+  },
+  stream
+);
