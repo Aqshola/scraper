@@ -114,7 +114,7 @@ const product = router({
       handleLoading(request_browser_id, 4); // FINISH
       return all_data.sort((a, b) => a.price - b.price);
     } catch (error) {
-      logger.debug(error);
+      console.log(error);
       return [];
     }
   }),
