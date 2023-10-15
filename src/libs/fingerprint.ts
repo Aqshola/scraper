@@ -1,4 +1,6 @@
-import { v4 as uuidV4 } from "uuid";
+const uuid = require("uuid");
+const uuidV4 = uuid.uuidV4;
+// import { v4 as uuidV4 } from "uuid";
 const IDENTIFIER_KEY = "fp";
 export const identifyBrowser = () => {
   const local_identifier = localStorage.getItem(IDENTIFIER_KEY);
