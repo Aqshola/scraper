@@ -36,6 +36,8 @@ export async function shopee(
           const jsonval = await response.json();
           const list_item: Array<any> = await jsonval.items;
 
+          if (!list_item) resolve([]); //handle undefined
+
           list_item.forEach((el) => {
             const item_info = el.item_basic;
             const imageSrc = shopeeImageConverter(item_info.images[0]);
