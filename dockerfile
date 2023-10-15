@@ -1,10 +1,7 @@
 FROM node:18-alpine AS base
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
-RUN apt-get update && \
-    apt-get install -y libc6 && \
-    apt-get install -y git && \
-    rm -rf /var/lib/apt/lists/*
+
 
 # Install dependencies only when needed
 FROM base AS deps
