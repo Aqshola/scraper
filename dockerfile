@@ -1,16 +1,18 @@
 FROM node:slim AS base
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
+
+
+
+# Install dependencies only when needed
+FROM base AS deps
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
+# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 
 RUN apt-get update && \
     apt-get install -y libc6 && \
     apt-get install -y git && \
     rm -rf /var/lib/apt/lists/*
 
-# Install dependencies only when needed
-FROM base AS deps
-# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 # Install Google Chrome Stable and fonts
@@ -50,6 +52,7 @@ RUN npm run build
 
 # Production image, copy all the files and run next
 FROM base AS runner
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 WORKDIR /app
 
 ENV NODE_ENV production
