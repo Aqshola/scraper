@@ -37,4 +37,4 @@ jobs:
           port: ${{ secrets.PORT }}
           command_timeout: 30m
           script: |
-            docker run -rm -d -p 9000:3000 scraper
+            docker run --rm -d -p 9000:3000 scraper
