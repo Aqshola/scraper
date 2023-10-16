@@ -55,10 +55,10 @@ export default function Card(props: Props) {
           <div className="block w-full h-44 relative">
             <Image
               loading="lazy"
-              placeholder="blur"
+              // placeholder="blur"
               className="object-contain"
               src={props.image.src}
-              blurDataURL={props.image.blurHash}
+              // blurDataURL={props.image.blurHash}
               fill
               alt="baju"
               sizes="176px"

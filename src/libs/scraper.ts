@@ -18,7 +18,7 @@ export async function shopee(
   const page = await browser.newPage();
   await page.goto(shopee_link, {
     waitUntil: "networkidle2",
-    timeout: TIMEOUT_DURATION,
+    timeout: 150000,
   });
 
   await page.waitForSelector(".shopee-searchbar-input__input");

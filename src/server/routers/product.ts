@@ -102,14 +102,14 @@ const product = router({
       if (browser.pages.length == 0) {
         browser.close();
       }
-      try {
-        generated_data = await measureTime(
-          async () => await generateProductBlurData(all_data),
-          "GENERATE BLUR"
-        );
-      } catch (error) {
-        logger.error(error, "Error Blur");
-      }
+      // try {
+      //   generated_data = await measureTime(
+      //     async () => await generateProductBlurData(all_data),
+      //     "GENERATE BLUR"
+      //   );
+      // } catch (error) {
+      //   logger.error(error, "Error Blur");
+      // }
 
       handleLoading(request_browser_id, 3);
 
