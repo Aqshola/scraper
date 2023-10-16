@@ -98,6 +98,7 @@ export async function tokopedia(
           let method = response.request().method();
           if (method == "POST") {
             const jsonval: [] = await response.json();
+            if (!jsonval) resolve([]);
             const parsing_data = jsonval.map(
               (el: any) => el.data.ace_search_product_v4.data.products
             );

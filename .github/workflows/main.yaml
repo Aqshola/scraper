@@ -3,7 +3,7 @@ on: push
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 60
     steps:
       - name: Pull Data
         uses: appleboy/ssh-action@v0.1.10
