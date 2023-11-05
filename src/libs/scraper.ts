@@ -34,6 +34,7 @@ export async function shopee(
           request.url().includes("/api/v4/search/search_items?by=relevancy")
         ) {
           const jsonval = await response.json();
+          console.log(jsonval, "shopee items before");
           const list_item: Array<any> = await jsonval.items;
 
           if (!list_item) return resolve([]); //handle undefined
