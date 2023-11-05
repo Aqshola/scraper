@@ -35,9 +35,8 @@ export async function shopee(
         ) {
           const jsonval = await response.json();
           const list_item: Array<any> = await jsonval.items;
-          console.log("SHOPEE ITEM", list_item, jsonval);
 
-          if (!list_item) resolve([]); //handle undefined
+          if (!list_item) return resolve([]); //handle undefined
 
           list_item.forEach((el) => {
             const item_info = el.item_basic;

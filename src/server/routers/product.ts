@@ -117,7 +117,9 @@ const product = router({
       handleLoading(request_browser_id, 3);
 
       if (generated_data.length == 0) {
-        await redisClient.set(search_value, JSON.stringify(all_data));
+        if (shopee_data.length != 0) {
+          await redisClient.set(search_value, JSON.stringify(all_data));
+        }
       } else {
         await redisClient.set(search_value, JSON.stringify(generated_data));
       }
