@@ -20,8 +20,8 @@ export default function NavProduct({ installPrompt }: Props) {
       membandingkan barang yang diinginkan. Data yang digunakan diperoleh
       melalui hasil scraping dari e-commerce yang dituju. sejauh ini{" "}
       <b>Cabar</b> dapat memberikan data dari{" "}
-      <span className="font-bold bg-light-orange">Shopee</span> dan{" "}
-      <span className="font-bold bg-light-green">Tokopedia</span>
+      <span className="font-bold bg-light-orange">Shopee</span>,{" "}
+      <span className="font-bold bg-light-green">Tokopedia</span> dan{" "}
       <span className="font-bold bg-light-blue">Blibli</span>
     </p>
   );

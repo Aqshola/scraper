@@ -61,7 +61,7 @@ const product = router({
       logger.info("BROWSER OPEN");
       const browser = await puppeteer.launch({
         executablePath: `/usr/bin/google-chrome`,
-        headless: true,
+        headless: "new",
         timeout: 10000,
         defaultViewport: null,
         ignoreHTTPSErrors: true,

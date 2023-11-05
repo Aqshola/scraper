@@ -48,7 +48,7 @@ function Pagination({
   }
   return (
     <div className="flex gap-2">
-      {showPrevButton && (
+      {/* {showPrevButton && (
         <div>
           <Button
             type="button"
@@ -72,7 +72,7 @@ function Pagination({
             <span className="text-2xl">...</span>
           </div>
         </>
-      )}
+      )} */}
 
       {listOfNumberPage.slice(start, end).map((data) => (
         <div key={data}>
@@ -86,7 +86,7 @@ function Pagination({
       ))}
 
       {/* BUTTON LAST PAGE */}
-      {currentPages <= props.pages - showButtonSection && (
+      {/* {currentPages <= props.pages - showButtonSection - 2 && (
         <>
           <div className="flex items-end">
             <span className="text-2xl">...</span>
@@ -110,7 +110,7 @@ function Pagination({
             <ArrowRight2 />
           </Button>
         </div>
-      )}
+      )} */}
     </div>
   );
 }
