@@ -67,8 +67,8 @@ const product = router({
         args: [
           "--no-sandbox",
           "--window-size=1400,900",
-          // "--disable-gpu",
-          // "--headless",
+          "--disable-gpu",
+          "--headless",
           // "--disable-dev-shm-usage",
           // '--proxy-server="direct://"',
           // "--proxy-bypass-list=*",
