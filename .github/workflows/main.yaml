@@ -43,5 +43,4 @@ jobs:
           command_timeout: 30m
           script: |
             docker stop scraper
-            docker remove scraper
-            docker run --name scraper --rm -p 9000:3000 -d scraper
+            docker remove scraper && docker run --name scraper --rm -p 9000:3000 -d scraper
