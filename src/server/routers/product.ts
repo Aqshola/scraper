@@ -64,16 +64,6 @@ const product = router({
         timeout: 15000,
         defaultViewport: null,
         ignoreHTTPSErrors: true,
-        dumpio: false,
-        args: [
-          "--no-sandbox",
-          "--window-size=1400,900",
-          "--disable-gpu",
-          "--headless",
-          "--disable-dev-shm-usage",
-          '--proxy-server="direct://"',
-          "--proxy-bypass-list=*",
-        ],
       });
 
       try {

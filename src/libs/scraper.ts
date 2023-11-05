@@ -64,8 +64,8 @@ export async function shopee(
             });
           });
 
-          resolve(result);
           await page.close();
+          resolve(result);
         }
       });
     });
@@ -127,8 +127,8 @@ export async function tokopedia(
                   },
                 });
               });
-              resolve(result);
               await page.close();
+              resolve(result);
             }
           }
         }
