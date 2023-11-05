@@ -14,7 +14,7 @@ export async function shopee(
   browser: Browser,
   searchProduct: string
 ): Promise<listOfProduct> {
-  const shopee_link = "https://shopee.co.id";
+  const shopee_link = "https://shopee.com";
   const page = await browser.newPage();
   await page.goto(shopee_link, {
     waitUntil: "networkidle2",
@@ -134,6 +134,66 @@ export async function tokopedia(
         }
       });
     });
+
+  const result_scrap = await response_data();
+  return result_scrap;
+}
+
+export async function blibli(
+  browser: Browser,
+  searchProduct: string
+): Promise<listOfProduct> {
+  const blibli_link = "https://www.blibli.com";
+  const page = await browser.newPage();
+  await page.setUserAgent(
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36"
+  );
+  await page.goto(blibli_link, {
+    waitUntil: "networkidle2",
+    timeout: 30000,
+  });
+
+  await page.waitForSelector('[name="search"]');
+  await page.type('[name="search"]', searchProduct);
+  await page.keyboard.press("Enter");
+
+  const response_data: () => Promise<listOfProduct> = () => {
+    return new Promise((resolve) => {
+      page.on("response", async (response: HTTPResponse) => {
+        const result: listOfProduct = [];
+        const request = response.request();
+        if (request.url().includes("/backend/search/products?")) {
+          const jsonval = await response.json();
+          if (jsonval.data.filters.length == 0) {
+            const list_item: Array<any> = await jsonval.data.products;
+            list_item.forEach((product) => {
+              result.push({
+                id: product.id,
+                image: {
+                  src: product.images[0],
+                  height: "",
+                  width: "",
+                  blurHash: "",
+                },
+                name: product.name,
+                platform: "blibli",
+                price: product.price.minPrice,
+                rating: product.review.rating,
+                selled_item: product.soldRangeCount
+                  ? product.soldRangeCount.id
+                  : "0",
+                shop_location: product.location,
+                url: `${blibli_link}${product.url}`,
+              });
+            });
+
+            await page.close();
+            resolve(result);
+          }
+        }
+      });
+    });
+  };
 
   const result_scrap = await response_data();
   return result_scrap;

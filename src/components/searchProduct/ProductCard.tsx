@@ -15,7 +15,7 @@ type Props = {
   selledItem: string;
   location: string;
   image: ImageType;
-  platform: "shopee" | "tokopedia";
+  platform: "shopee" | "tokopedia" | "blibli";
   link: string;
 };
 
@@ -38,7 +38,8 @@ export default function Card(props: Props) {
         className={clsx(
           "absolute top-0 left-0 radius w-14 h-14 border-r-4 border-b-4 rounded-br-[300px]  border-black",
           props.platform == "shopee" && "bg-light-orange",
-          props.platform == "tokopedia" && "bg-light-green"
+          props.platform == "tokopedia" && "bg-light-green",
+          props.platform == "blibli" && "bg-light-blue"
         )}
       >
         <div className="h-7 w-7 flex  mt-2 ml-2 relative">

@@ -9,7 +9,11 @@ const withPWA = PWA({
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["images.tokopedia.net", "down-id.img.susercontent.com"],
+    domains: [
+      "images.tokopedia.net",
+      "down-id.img.susercontent.com",
+      "www.static-src.com",
+    ],
   },
   output: "standalone",
 };

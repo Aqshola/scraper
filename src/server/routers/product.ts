@@ -23,7 +23,7 @@ import "puppeteer-extra-plugin-user-data-dir";
 
 import { measureAndRetry, measureTime } from "@/helpers/util";
 import { listOfProduct } from "@/types/product";
-import { shopee, tokopedia } from "@/libs/scraper";
+import { shopee, tokopedia, blibli } from "@/libs/scraper";
 import { redisClient } from "@/libs/redis";
 import { handleLoading } from "@/libs/loader";
 import { TRPCError } from "@trpc/server";
@@ -39,6 +39,7 @@ const product = router({
       let generated_data: listOfProduct = [];
       let tokopedia_data: listOfProduct = [];
       let shopee_data: listOfProduct = [];
+      let blibli_data: listOfProduct = [];
       handleLoading(request_browser_id, 0); // START LOADING
       puppeteer.use(stealthPlugin());
 
@@ -87,6 +88,11 @@ const product = router({
           "SHOPEE"
         );
         handleLoading(request_browser_id, 2); // START SHOPEE
+        blibli_data = await measureAndRetry(
+          async () => await blibli(browser, search_value),
+          "BLIBLI"
+        );
+        handleLoading(request_browser_id, 3); // START SHOPEE
       } catch (error) {
         logger.error("Error happens", error);
       } finally {
@@ -101,6 +107,10 @@ const product = router({
         all_data = all_data.concat(shopee_data);
       }
 
+      if (blibli_data && blibli_data.length > 0) {
+        all_data = all_data.concat(blibli_data);
+      }
+
       if (browser.pages.length == 0) {
         browser.close();
       }
@@ -113,7 +123,7 @@ const product = router({
       //   logger.error(error, "Error Blur");
       // }
 
-      handleLoading(request_browser_id, 3);
+      handleLoading(request_browser_id, 4);
 
       if (generated_data.length == 0) {
         if (shopee_data.length != 0) {
@@ -122,7 +132,7 @@ const product = router({
       } else {
         await redisClient.set(search_value, JSON.stringify(generated_data));
       }
-      handleLoading(request_browser_id, 4); // FINISH
+      handleLoading(request_browser_id, 5); // FINISH
       return all_data.sort((a, b) => a.price - b.price);
     } catch (error) {
       console.log(error);

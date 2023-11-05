@@ -8,7 +8,7 @@ export type product = {
   shop_location: string;
   rating: string;
   selled_item: string;
-  platform: "shopee" | "tokopedia";
+  platform: "shopee" | "tokopedia" | "blibli";
   image: Image;
 };
 export type listOfProduct = Array<product>;
