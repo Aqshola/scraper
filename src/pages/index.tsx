@@ -19,7 +19,7 @@ export default function Home() {
   /** DECLARE */
   const route = useRouter();
   const [pagingArr, currPage, manyPages, setInitialPage, changePage] =
-    usePagination<product>(12);
+    usePagination<product>(20);
 
   const paramSearch = route.query.search as string;
   const [fetchLoading, setfetchLoading] = useState(false);
@@ -27,6 +27,7 @@ export default function Home() {
   const installPromp = useRef<any>(null);
 
   /** INITIATE FETCHER */
+  const getUtils = trpc.useContext();
   const getProduct = trpc.product.search.useQuery(
     { text: paramSearch },
     {
@@ -67,10 +68,12 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (paramSearch && !productData) {
+    if (paramSearch) {
+      getUtils.product.invalidate();
       getProduct.refetch();
     }
     if (!paramSearch) {
+      getProduct.remove();
       mutateLoading.mutate({ value: 0 });
     }
   }, [paramSearch]);

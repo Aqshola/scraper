@@ -60,16 +60,19 @@ const product = router({
       logger.info("BROWSER OPEN");
       const browser = await puppeteer.launch({
         executablePath: `/usr/bin/google-chrome`,
-        headless: "new",
+        headless: false,
         timeout: 15000,
         defaultViewport: null,
         ignoreHTTPSErrors: true,
+        dumpio: false,
         args: [
           "--no-sandbox",
           "--window-size=1400,900",
           "--disable-gpu",
           "--headless",
           "--disable-dev-shm-usage",
+          '--proxy-server="direct://"',
+          "--proxy-bypass-list=*",
         ],
       });
 
