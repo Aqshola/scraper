@@ -22,6 +22,7 @@ export default function NavProduct({ installPrompt }: Props) {
       <b>Cabar</b> dapat memberikan data dari{" "}
       <span className="font-bold bg-light-orange">Shopee</span> dan{" "}
       <span className="font-bold bg-light-green">Tokopedia</span>
+      <span className="font-bold bg-light-blue">Blibli</span>
     </p>
   );
 
