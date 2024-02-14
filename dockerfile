@@ -38,6 +38,8 @@ COPY . .
 # If using npm comment out above and use below instead
 RUN npm run build
 
+RUN npx prisma generate
+
 # Production image, copy all the files and run next
 FROM base AS runner
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
